@@ -1,0 +1,6 @@
+node_modules/
+dist/
+animation/out/
+work/
+.openai/local/
+*.log

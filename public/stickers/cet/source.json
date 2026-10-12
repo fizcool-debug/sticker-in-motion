@@ -1,0 +1,10 @@
+{
+  "id": "cet",
+  "name": "CET",
+  "physicalWidthMeters": 0.1016,
+  "aspectRatio": 1,
+  "targetIndex": 0,
+  "animation": "Rainbow sweep and subtle pulse",
+  "trackingValidatedOnDevice": false,
+  "source": "User supplied CET logo; exact original retained in assets/source."
+}

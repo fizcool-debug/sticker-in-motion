@@ -1,0 +1,42 @@
+# Product
+
+<!-- impeccable:product-schema 1 -->
+
+## Platform
+
+web
+
+## Stack
+
+User approved the recommended React + TypeScript stack. Vite serves the app; MindAR and Three.js provide image tracking and rendering. Remotion authors the animated assets.
+
+## Product Purpose
+
+Scan a supplied printed 2D sticker and display an animated version in the camera view. The proposed default is alignment to the physical sticker as the phone moves.
+
+## Operating Context
+
+First test device: iPhone 16, Safari. First physical target: a square CET sticker, 4 inches by 4 inches (101.6 mm by 101.6 mm). Physical phone testing is required to verify tracking.
+
+## Brand Commitments
+
+Provisional app name: Sticker in Motion. CET is only the first test sticker, not the app identity. Scanner copy is generic; sticker names appear only when recognized or selected for preview. The prototype contains Red No Rush and CET, with automatic recognition of either and one tracked sticker at a time.
+
+Preserve the supplied CET test artwork, lettering, rainbow bar, and proportions. Approved animation for that sticker: rainbow sweep and subtle pulse. Do not change printed artwork to improve tracking without approval.
+
+## Evidence on Hand
+
+Original supplied image: assets/source/cet-logo.png, copied from the user-selected Google Drive file. Source resolution is 12500 by 12500 pixels. No tracking results or phone performance measurements are available yet.
+
+User phone feedback after the first publication: recognition works; the popup needs greater surface separation and reduced shake. This is qualitative feedback, not a device performance measurement.
+
+## Capabilities and Constraints
+
+Current collection: CET uses its editable Remotion animation. Red No Rush uses the supplied MP4 unchanged in preview and an eight-frame atlas derived from it in AR, preserving its 6 fps timing and opaque scene. Its supplied recognition image is preserved without cropping; physical print dimensions were not specified. Camera access on a phone requires a secure origin. Target loss, permission refusal, replay, and leaving scanning must have predictable behavior. Sound, broader audience, additional devices, and public distribution remain undecided.
+
+## Product Principles
+
+- Keep the real artwork recognizable throughout animation.
+- Validate recognition against the unchanged print before scaling the collection.
+- Keep camera processing local.
+- Distinguish an animation preview from verified AR tracking.

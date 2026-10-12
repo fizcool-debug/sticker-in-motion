@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-12T06:31:16.429Z",
+  "title": "Design System: Sticker in Motion",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Near-black Ink",
+        "tonalRamp": [
+          "oklch(15% 0.00552 51.81)",
+          "oklch(26.43% 0.00552 51.81)",
+          "oklch(37.86% 0.00552 51.81)",
+          "oklch(49.29% 0.00552 51.81)",
+          "oklch(60.71% 0.00552 51.81)",
+          "oklch(72.14% 0.00552 51.81)",
+          "oklch(83.57% 0.00552 51.81)",
+          "oklch(95% 0.00552 51.81)"
+        ]
+      },
+      "foreground": {
+        "role": "primary",
+        "displayName": "Solid White",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26.43% 0.00000 89.88)",
+          "oklch(37.86% 0.00000 89.88)",
+          "oklch(49.29% 0.00000 89.88)",
+          "oklch(60.71% 0.00000 89.88)",
+          "oklch(72.14% 0.00000 89.88)",
+          "oklch(83.57% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "secondary": {
+        "role": "neutral",
+        "displayName": "Warm Gray",
+        "tonalRamp": [
+          "oklch(15% 0.01073 67.68)",
+          "oklch(26.43% 0.01073 67.68)",
+          "oklch(37.86% 0.01073 67.68)",
+          "oklch(49.29% 0.01073 67.68)",
+          "oklch(60.71% 0.01073 67.68)",
+          "oklch(72.14% 0.01073 67.68)",
+          "oklch(83.57% 0.01073 67.68)",
+          "oklch(95% 0.01073 67.68)"
+        ]
+      },
+      "divider": {
+        "role": "neutral",
+        "displayName": "Stone Divider",
+        "tonalRamp": [
+          "oklch(15% 0.01054 67.53)",
+          "oklch(26.43% 0.01054 67.53)",
+          "oklch(37.86% 0.01054 67.53)",
+          "oklch(49.29% 0.01054 67.53)",
+          "oklch(60.71% 0.01054 67.53)",
+          "oklch(72.14% 0.01054 67.53)",
+          "oklch(83.57% 0.01054 67.53)",
+          "oklch(95% 0.01054 67.53)"
+        ]
+      },
+      "success": {
+        "role": "primary",
+        "displayName": "Recognition Mint",
+        "tonalRamp": [
+          "oklch(15% 0.13552 155.17)",
+          "oklch(26.43% 0.13552 155.17)",
+          "oklch(37.86% 0.13552 155.17)",
+          "oklch(49.29% 0.13552 155.17)",
+          "oklch(60.71% 0.13552 155.17)",
+          "oklch(72.14% 0.13552 155.17)",
+          "oklch(83.57% 0.13552 155.17)",
+          "oklch(95% 0.13552 155.17)"
+        ]
+      },
+      "primary-hover": {
+        "role": "neutral",
+        "displayName": "Pale Stone",
+        "tonalRamp": [
+          "oklch(15% 0.01043 67.69)",
+          "oklch(26.43% 0.01043 67.69)",
+          "oklch(37.86% 0.01043 67.69)",
+          "oklch(49.29% 0.01043 67.69)",
+          "oklch(60.71% 0.01043 67.69)",
+          "oklch(72.14% 0.01043 67.69)",
+          "oklch(83.57% 0.01043 67.69)",
+          "oklch(95% 0.01043 67.69)"
+        ]
+      },
+      "icon-hover": {
+        "role": "neutral",
+        "displayName": "Warm Charcoal",
+        "tonalRamp": [
+          "oklch(15% 0.01184 67.27)",
+          "oklch(26.43% 0.01184 67.27)",
+          "oklch(37.86% 0.01184 67.27)",
+          "oklch(49.29% 0.01184 67.27)",
+          "oklch(60.71% 0.01184 67.27)",
+          "oklch(72.14% 0.01184 67.27)",
+          "oklch(83.57% 0.01184 67.27)",
+          "oklch(95% 0.01184 67.27)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Fluid preview heading."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Scanner status."
+      },
+      "identity": {
+        "displayName": "Identity",
+        "purpose": "Top-bar Sticker in Motion app identity."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Status and preview supporting paragraphs."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Actions, metadata, tips, and notes."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Privacy and Player caption."
+      }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [
+      {
+        "name": "desktop",
+        "value": "700px"
+      },
+      {
+        "name": "compact-height-mobile",
+        "value": "(max-height:650px) and (max-width:699px)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Full-width recovery, replay, or scan action; documented height is a minimum.",
+      "html": "<button class=\"ds-primary\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 7h3l2-3h6l2 3h3v13H4z\"/><circle cx=\"12\" cy=\"13\" r=\"4\"/></svg> Try camera again</button>",
+      "css": ".ds-primary{font-family:'Space Grotesk',sans-serif;width:100%;min-height:54px;border:0;border-radius:14px;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:12px;font-weight:500;font-size:16px;cursor:pointer}.ds-primary:hover{background:#e6e0da}.ds-primary:active{background:#c7c1bb}.ds-primary:focus-visible{outline:2px solid white;outline-offset:4px}.ds-primary:disabled{opacity:.5;cursor:wait}"
+    },
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Quiet Preview or tips action; documented height is a minimum.",
+      "html": "<button class=\"ds-text\">Preview</button>",
+      "css": ".ds-text{font-family:'Space Grotesk',sans-serif;border:0;background:transparent;padding:12px 0;font-size:14px;min-height:48px;color:white;cursor:pointer}.ds-text:hover{color:var(--success)}.ds-text:focus-visible{outline:2px solid white;outline-offset:4px}"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "button-icon",
+      "description": "Camera return control.",
+      "html": "<button class=\"ds-icon\" aria-label=\"Back to scanner\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 7h3l2-3h6l2 3h3v13H4z\"/><circle cx=\"12\" cy=\"13\" r=\"4\"/></svg></button>",
+      "css": ".ds-icon{display:grid;place-items:center;background:transparent;color:white;border:1px solid var(--line);width:48px;height:48px;border-radius:14px;cursor:pointer}.ds-icon:hover{background:#28231e}.ds-icon:focus-visible{outline:2px solid white;outline-offset:4px}"
+    },
+    {
+      "name": "Top Navigation",
+      "kind": "nav",
+      "description": "Solid ink navigation with generic app identity and a quiet action.",
+      "html": "<nav class=\"ds-top\"><span class=\"ds-mark\">Sticker in Motion</span><button class=\"ds-text\">Preview</button></nav>",
+      "css": ".ds-top{font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:16px;padding:20px 24px;background:var(--ink);color:#fff}.ds-mark{font-size:20px;line-height:1.2;flex:1;font-weight:600;letter-spacing:-.03em}.ds-mark span,.ds-description{color:var(--muted)}.ds-description{font-size:13px;flex:1}.ds-text{font-family:'Space Grotesk',sans-serif;border:0;background:transparent;padding:12px 0;font-size:14px;min-height:48px;color:white;cursor:pointer}.ds-text:hover{color:var(--success)}.ds-text:focus-visible{outline:2px solid white;outline-offset:4px}"
+    },
+    {
+      "name": "Preview Frame",
+      "kind": "card",
+      "refersTo": "preview-frame",
+      "description": "Flat divider frame for square animation content; the sample does not simulate playback.",
+      "html": "<div class=\"ds-frame\"><span>Animation preview</span></div>",
+      "css": ".ds-frame{font-family:'Space Grotesk',sans-serif;aspect-ratio:1;display:grid;place-items:center;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--ink);color:var(--muted);font-size:14px}"
+    },
+    {
+      "name": "Status Surface",
+      "kind": "custom",
+      "description": "Desktop status surface, with inline found indication and recovery action.",
+      "html": "<section class=\"ds-panel\"><div class=\"ds-status\"><span class=\"ds-dot\"></span><h1>Your camera needs a moment</h1><p>Allow the camera in Safari settings, then try again.</p></div><button class=\"ds-primary\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 7h3l2-3h6l2 3h3v13H4z\"/><circle cx=\"12\" cy=\"13\" r=\"4\"/></svg> Try camera again</button></section>",
+      "css": ".ds-panel{font-family:'Space Grotesk',sans-serif;background:var(--ink);color:#fff;padding:28px;border-radius:14px;max-width:520px}.ds-status{position:relative;padding-left:18px}.ds-dot{position:absolute;left:0;top:10px;width:6px;height:6px;background:var(--muted);border-radius:50%}.ds-status h1{font-size:28px;line-height:1.15;font-weight:500;letter-spacing:-.025em;margin:0;text-wrap:balance}.ds-status p{font-size:15px;line-height:1.5;color:var(--muted);margin:10px 0 0;max-width:52ch}.ds-panel .ds-primary{margin-top:24px}.ds-primary{font-family:'Space Grotesk',sans-serif;width:100%;min-height:54px;border:0;border-radius:14px;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:12px;font-weight:500;font-size:16px;cursor:pointer}.ds-primary:hover{background:#e6e0da}.ds-primary:active{background:#c7c1bb}.ds-primary:focus-visible{outline:2px solid white;outline-offset:4px}.ds-primary:disabled{opacity:.5;cursor:wait}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The camera and sticker lead",
+    "overview": "The confirmed camera-first concept lets each sticker artwork lead. Sticker in Motion is the provisional app identity; CET is only the first test asset. Near-black ink, white controls, and self-hosted Space Grotesk keep the interface quiet and readable around changing camera frames. Preserve each supplied sticker artwork and show its name only when recognized or selected for preview.\n\nScanning uses a full-height camera surface; the separate animation preview uses a square Player and explanatory caption. These describe the current surfaces, not a mandatory composition for every future page. Recovery remains actionable within the scanner canvas.",
+    "keyCharacteristics": [
+      "Camera-led composition with quiet controls.",
+      "Solid ink surfaces and high-contrast actions.",
+      "Rainbow belongs to the supplied artwork.",
+      "Preview is explicitly distinguished from AR tracking."
+    ],
+    "rules": [
+      {
+        "name": "The Artwork Rainbow Rule",
+        "body": "Keep rainbow color inside the supplied artwork; do not spread it into a blanket interface gradient.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tight-but-readable Rule",
+        "body": "The current type system never tracks tighter than -0.03em.",
+        "section": "typography"
+      },
+      {
+        "name": "The Solid Surface Rule",
+        "body": "Place readable controls on solid ink surfaces when the camera background can vary.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve supplied CET lettering, rainbow bar, and proportions.",
+      "Do keep controls on solid surfaces around the changing camera image.",
+      "Do retain visible focus outlines and at least 48px button targets.",
+      "Do label the animation preview distinctly from verified AR tracking."
+    ],
+    "donts": [
+      "Don't apply the artwork's rainbow as a blanket UI gradient.",
+      "Don't use decorative looping motion in scanner controls.",
+      "Don't claim physical tracking is verified from a preview or synthetic camera recovery capture."
+    ]
+  }
+}

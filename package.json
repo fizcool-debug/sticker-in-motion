@@ -1,0 +1,30 @@
+{
+  "name": "cet-ar-sticker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "studio": "npm --prefix animation run dev"
+  },
+  "dependencies": {
+    "@remotion/player": "4.0.534",
+    "remotion": "4.0.534",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "0.160.0",
+    "mind-ar": "1.2.5"
+  },
+  "overrides": { "tar": "^7.5.21" },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.160.0",
+    "@vitejs/plugin-react": "latest",
+    "typescript": "5.9.3",
+    "vite": "latest",
+    "@fontsource/space-grotesk": "latest"
+  }
+}

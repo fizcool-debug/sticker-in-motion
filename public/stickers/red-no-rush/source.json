@@ -1,0 +1,13 @@
+{
+  "image": "IMG_0935.PNG",
+  "video": "Red_No_Rush.MP4",
+  "sourceVideoSize": [
+    2048,
+    2048
+  ],
+  "fps": 6,
+  "frames": 8,
+  "durationSeconds": 1.3333333333333333,
+  "audio": false,
+  "alpha": false
+}
