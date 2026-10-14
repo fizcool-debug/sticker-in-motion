@@ -26,3 +26,11 @@ Added the supplied image unchanged as target index 0 and retained CET as index 1
 
 Production build passed. scripts/verify-collection.mjs passed at 393 by 852 and 1440 by 900: original video dimensions/duration, inline muted looping playback, selection of both previews, camera recovery, and no horizontal overflow/page errors. Synthetic canvas camera checks passed actual detection of both images, switching back and forth, loss, reacquisition, replay and camera cleanup. AR screenshots half a second apart show changing artwork pixels; preview and AR captures were inspected. The 0.18 image-relative popup depth and rigid pose smoothing remain applied independently per target. Physical recognition and performance on iPhone 16 Safari still require testing with the new print.
 
+
+## Android APK — October 14
+
+Built the Capacitor Android debug APK with JDK 21, Gradle 8.14.3, Android SDK 36 and AGP 8.13. The app packages both sticker targets and animations locally. API 37 Android emulator: camera permission denial/recovery, live 480 by 640 camera stream, video playback, CET preview, original artwork viewing, native Back navigation, background camera teardown/resume, 1.3 font scale, and landscape passed. Screenshots were inspected; landscape was changed to side-by-side guide and controls after the first inspection showed cramped controls. Final native checks produced no page errors.
+
+A synthetic canvas camera inside the actual Android WebView also passed detection of both targets, switching, loss/reacquisition and replay. This is software/emulator evidence, not measured tracking on Redmi Turbo 5 hardware. Physical sticker alignment, jitter, heat and sustained camera performance on that phone remain to be checked. Runtime npm audit retains the four previously documented moderate upstream MindAR/TensorFlow issues; no high or critical runtime advisories. Debug APK is for sideload testing; release signing and Play Store distribution are not configured.
+
+Run scripts/verify-android.mjs and scripts/verify-android-tracking.mjs after forwarding tcp:9222 to the installed debug app's webview_devtools_remote_<pid> socket. The scripts use the workspace's bundled Playwright/Edge dependency paths and an emulator by default, and restore emulator font/orientation settings. QA images are in ignored work/qa/android.

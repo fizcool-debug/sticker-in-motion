@@ -7,24 +7,33 @@
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "studio": "npm --prefix animation run dev"
+    "studio": "npm --prefix animation run dev",
+    "android:sync": "npm run build && cap sync android",
+    "android:open": "cap open android",
+    "android:apk": "powershell -NoProfile -File scripts/build-android.ps1"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.5.3",
     "@remotion/player": "4.0.534",
-    "remotion": "4.0.534",
+    "mind-ar": "1.2.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "three": "0.160.0",
-    "mind-ar": "1.2.5"
+    "remotion": "4.0.534",
+    "three": "0.160.0"
   },
-  "overrides": { "tar": "^7.5.21" },
+  "overrides": {
+    "tar": "^7.5.21"
+  },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.3",
+    "@fontsource/space-grotesk": "latest",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.160.0",
     "@vitejs/plugin-react": "latest",
     "typescript": "5.9.3",
-    "vite": "latest",
-    "@fontsource/space-grotesk": "latest"
+    "vite": "latest"
   }
 }

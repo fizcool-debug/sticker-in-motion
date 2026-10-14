@@ -4,7 +4,7 @@
 
 ## Platform
 
-web
+android (Capacitor), with the existing web build retained
 
 ## Stack
 
@@ -16,7 +16,7 @@ Scan a supplied printed 2D sticker and display an animated version in the camera
 
 ## Operating Context
 
-First test device: iPhone 16, Safari. First physical target: a square CET sticker, 4 inches by 4 inches (101.6 mm by 101.6 mm). Physical phone testing is required to verify tracking.
+Current target: Redmi Turbo 5 Android phone. The user switched from the web app to an Android app on October 14. First web test device was iPhone 16 Safari. CET remains a 4-inch square target; Red No Rush dimensions are unspecified. Physical Android tracking requires testing on the actual phone.
 
 ## Brand Commitments
 

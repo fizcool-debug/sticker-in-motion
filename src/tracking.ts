@@ -80,7 +80,7 @@ export async function startTracker(container: HTMLDivElement, signal: AbortSigna
     let timeout: ReturnType<typeof setTimeout> | undefined;
     try {
       await Promise.race([ar.start(), new Promise<never>((_, reject) => {
-        timeout = setTimeout(() => reject(Error('Camera setup took too long. Reload and try again in Safari.')), 45000);
+        timeout = setTimeout(() => reject(Error('Camera setup took too long. Restart the app and try again.')), 45000);
       }), new Promise<never>((_, reject) => signal.addEventListener('abort', () => reject(new DOMException('Cancelled', 'AbortError')), { once: true }))]);
     } finally { clearTimeout(timeout); }
     if (signal.aborted || stopped) {
@@ -112,6 +112,6 @@ export async function startTracker(container: HTMLDivElement, signal: AbortSigna
   } catch (error) {
     stop();
     if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
-    throw error || Error('Camera access was not granted. Allow the camera in Safari settings, then try again.');
+    throw error || new DOMException('Camera permission was not granted.', 'NotAllowedError');
   }
 }

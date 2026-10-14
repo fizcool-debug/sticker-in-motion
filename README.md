@@ -46,3 +46,11 @@ The collection now includes Red No Rush (index 0) and CET (index 1), with automa
 
 Run node scripts/compile-collection.mjs with npm run dev on port 5173 to regenerate collection.mind. To regenerate the Red No Rush atlas, extract its video to work/red-frames/01.png through 08.png at 512 square using FFmpeg, then run scripts/prepare-red.py with Python/Pillow. src/stickers.ts owns the collection and target indices.
 
+
+## Android app
+
+Android is now the primary target. The existing React/MindAR app is bundled inside a Capacitor Android runtime, with both sticker targets and animations included locally. It uses the Android camera permission and Android System WebView; it does not depend on the hosted Site or use ARCore. App ID: com.fizcool.stickerinmotion. First test phone: Redmi Turbo 5.
+
+Requirements: Node 24, JDK 21, Android SDK 36 with build tools, and an up-to-date Android System WebView on the phone. Set JAVA_HOME and ANDROID_HOME for your machine, then run npm install --ignore-scripts and npm run android:apk. The APK is copied to artifacts/Sticker-in-Motion-debug.apk. npm run android:open opens the native project in Android Studio. Capacitor configuration is capacitor.config.ts; native source is android/.
+
+The debug APK is for sideload testing. Google Play distribution will require a release signing key, an app bundle, store details and device validation. The application keeps image processing on-device. Camera access is required; audio/storage permissions are not requested. System Back returns from Preview or closes tips, then delegates to the Android system at the scanner root. Backgrounding stops the camera; Resume reopens it. Native safe-area CSS variables and Android font scale are respected.

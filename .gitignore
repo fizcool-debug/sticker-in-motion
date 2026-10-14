@@ -4,3 +4,6 @@ animation/out/
 work/
 .openai/local/
 *.log
+artifacts/
+*.jks
+*.keystore

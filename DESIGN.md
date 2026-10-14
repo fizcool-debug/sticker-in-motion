@@ -192,3 +192,7 @@ Current evidence: source inspection plus the reported 393×852 and 1440×900 sca
 ## Collection preview extension
 
 The preview now has a labeled native sticker selector with two options. Red No Rush uses native inline video controls and starts paused, preserving the supplied animation. CET retains its Remotion Player. Both frames follow their animation aspect ratio. Scanning remains generic until recognition and chooses the matching animation automatically.
+
+## Android adaptation
+
+Preserve the camera-led artwork and generic app identity. Android permission copy replaces Safari instructions inside the native runtime. Native system Back handles Preview and tips while the scanner root retains system behavior. Capacitor SystemBars injects safe-area variables used by the interface, including cutouts in landscape. Android font scale is applied through WebView text zoom. The launcher and splash use a generic outlined sticker/scanning mark, not the CET logo. Android QA must come from the emulator or hardware; browser captures alone do not establish native behavior.

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Sticker in Motion</string>
+    <string name="title_activity_main">Sticker in Motion</string>
+    <string name="package_name">com.fizcool.stickerinmotion</string>
+    <string name="custom_url_scheme">com.fizcool.stickerinmotion</string>
+</resources>
