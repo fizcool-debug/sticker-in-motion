@@ -10,7 +10,8 @@
     "studio": "npm --prefix animation run dev",
     "android:sync": "npm run build && cap sync android",
     "android:open": "cap open android",
-    "android:apk": "powershell -NoProfile -File scripts/build-android.ps1"
+    "android:apk": "powershell -NoProfile -File scripts/build-android.ps1",
+    "android:publish": "powershell -NoProfile -File scripts/publish-android-release.ps1"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
