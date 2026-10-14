@@ -6,9 +6,9 @@ import { App as NativeApp } from '@capacitor/app';
 const native = Capacitor.isNativePlatform();
 const cameraRecovery = native ? 'Camera access was not granted. Allow Camera in Android Settings → Apps → Sticker in Motion → Permissions, then try again.' : 'Camera access was not granted. Allow the camera in your browser settings, then try again.';
 const MotionPreview = lazy(() => import('./MotionPreview'));
-function Icon({ kind }: { kind: 'camera' | 'replay' | 'arrow' }) {
+function Icon({ kind }: { kind: 'camera' | 'replay' | 'preview' }) {
   return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    {kind === 'camera' ? <><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/></> : kind === 'replay' ? <><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></> : <><path d="m10 5-7 7 7 7M3 12h18"/></>}
+    {kind === 'camera' ? <><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/></> : kind === 'replay' ? <><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></> : <><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 9 5 3-5 3z"/></>}
   </svg>;
 }
 export function App() {
@@ -18,12 +18,19 @@ export function App() {
   const [attempt, setAttempt] = useState(0);
   const [help, setHelp] = useState(false);
   const [artwork, setArtwork] = useState(false);
+  const [showHint, setShowHint] = useState(true);
   const [activeSticker, setActiveSticker] = useState<StickerDefinition | null>(null);
   const [previewId, setPreviewId] = useState(stickers[0].id);
   const previewSticker = stickers.find(sticker => sticker.id === previewId) ?? stickers[0];
   const container = useRef<HTMLDivElement>(null);
   const tracker = useRef<Tracker | null>(null);
-  const navigate = useCallback((next: boolean) => { location.hash = next ? 'preview' : 'scan'; }, []);
+  const navigate = useCallback((next: boolean) => { if (!next) { setHelp(false); setArtwork(false); } location.hash = next ? 'preview' : 'scan'; }, []);
+  useEffect(() => {
+    setShowHint(true);
+    if (scan !== 'scanning' && scan !== 'lost') return;
+    const timer = setTimeout(() => setShowHint(false), 4000);
+    return () => clearTimeout(timer);
+  }, [scan]);
   useEffect(() => {
     if (!native) return;
     let disposed = false;
@@ -68,13 +75,12 @@ export function App() {
     paused: ['Camera paused', 'Resume when you’re ready to scan.'],
     error: ['Your camera needs a moment', error],
   }[scan];
-  return <main className={preview ? 'app preview' : 'app scanner'}>
+  return <main className={preview ? 'app preview' : 'app scanner'} data-scan-state={scan}>
     {!preview && <div className="camera-surface" ref={container} aria-hidden="true" />}
-    <header className="topbar">
+    {preview && <header className="topbar">
       <span className="wordmark">Sticker in Motion</span>
-      {preview ? <button className="icon-button" aria-label="Back to scanner" onClick={() => navigate(false)}><Icon kind="camera" /></button>
-      : <button className="text-button" onClick={() => navigate(true)}>Preview <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg></button>}
-    </header>
+      <button className="icon-button" aria-label="Back to scanner" onClick={() => navigate(false)}><Icon kind="camera" /></button>
+    </header>}
     {preview ? <section className="preview-content">
       <div className="preview-heading"><h1>A little print.<br/>A new dimension.</h1><label className="sticker-select-label" htmlFor="sticker-select">Preview sticker</label><select id="sticker-select" value={previewId} onChange={e => setPreviewId(e.target.value)}>{stickers.map(sticker => <option key={sticker.id} value={sticker.id}>{sticker.name}</option>)}</select>{previewSticker.printedSize && <p>{previewSticker.printedSize}</p>}</div>
       {artwork ? <div className="player-wrap"><img style={{ width: '100%', display: 'block' }} src={`${previewSticker.assetBase}/print-preview.png`} alt={`${previewSticker.name} original sticker artwork`} /></div> : <Suspense fallback={<div className="preview-loading" role="status">Loading animation…</div>}><MotionPreview key={previewId} sticker={previewSticker} /></Suspense>}
@@ -82,19 +88,19 @@ export function App() {
       <p className="preview-note">This is an animation preview. Scan the printed sticker to see it in AR.</p>
       <button className="primary-button" onClick={() => navigate(false)}><Icon kind="camera"/> Scan my sticker</button>
       {native ? <button className="text-button print-link" style={{ width: '100%' }} onClick={() => setArtwork(!artwork)}>{artwork ? 'Return to animation' : 'View the sticker artwork'}</button> : <a className="print-link" href={`${previewSticker.assetBase}/print-preview.png`} target="_blank" rel="noreferrer">View the sticker artwork</a>}
+      <button className="text-button" aria-expanded={help} aria-controls="scan-help" onClick={() => setHelp(!help)}>{help ? 'Close tips' : 'Scanning tips'}</button>
+      {help && <div id="scan-help" className="help"><p>Use the original print in even light. Avoid glare, keep the sticker flat, and hold steady.</p><p>{cameraRecovery} Camera images stay on your device.</p></div>}
     </section> : <>
-      <div className={`aim-area ${scan === 'found' ? 'is-found' : ''}`} aria-hidden="true">
-        <div className="reticle"><i/><i/><i/><i/></div>
-        {(scan === 'loading' || scan === 'error' || scan === 'paused') && <div className="camera-placeholder"><Icon kind="camera" /><span>{scan === 'loading' ? 'Camera view' : 'Ready when you are'}</span></div>}
+      <div className="sr-only" role="status" aria-live="polite">{status[0]}. {status[1]}</div>
+      {(scan === 'scanning' || scan === 'lost') && <div className="aim-area" aria-hidden="true"><div className="reticle"><i/><i/><i/><i/></div></div>}
+      {(scan === 'scanning' || scan === 'lost') && showHint && <p className="camera-hint">{scan === 'lost' ? 'Bring the sticker back into view' : 'Point at a sticker'}</p>}
+      {(scan === 'loading' || scan === 'error' || scan === 'paused') && <section className="camera-recovery"><Icon kind="camera" /><h1>{status[0]}</h1><p>{status[1]}</p>
+        {scan !== 'loading' && <button className="primary-button" onClick={() => setAttempt(n => n + 1)}>{scan === 'paused' ? 'Resume camera' : 'Try camera again'}</button>}
+      </section>}
+      <div className="camera-actions">
+        {scan === 'found' && <button className="camera-control" aria-label="Replay animation" title="Replay animation" onClick={() => tracker.current?.replay()}><Icon kind="replay" /></button>}
+        <button className="camera-control" aria-label="Preview stickers" title="Preview stickers" onClick={() => navigate(true)}><Icon kind="preview" /></button>
       </div>
-      <section className="scan-panel">
-        <div className="status" role="status" aria-live="polite"><span className={`status-dot ${scan === 'found' ? 'connected' : ''}`} aria-hidden="true"/><h1>{status[0]}</h1><p>{status[1]}</p></div>
-        {scan === 'error' || scan === 'paused' ? <button className="primary-button" onClick={() => setAttempt(n => n + 1)}><Icon kind="camera"/>{scan === 'paused' ? 'Resume camera' : 'Try camera again'}</button>
-          : scan === 'found' ? <button className="primary-button" onClick={() => tracker.current?.replay()}><Icon kind="replay"/>Replay animation</button> : null}
-        <div className="scan-meta"><span>{scan === 'found' && activeSticker ? [activeSticker.name, activeSticker.printedSize].filter(Boolean).join(' · ') : 'Scan a supported sticker'}</span><button className="text-button" aria-expanded={help} aria-controls="scan-help" onClick={() => setHelp(!help)}>{help ? 'Close tips' : 'Scanning tips'}</button></div>
-        {help && <div id="scan-help" className="help"><p>Use the original print in even light. Avoid glare, keep the sticker flat, and move closer until it fills the guide.</p><p>{native ? 'Camera access: Android Settings → Apps → Sticker in Motion → Permissions → Camera.' : 'Camera access: allow Camera in your browser’s website settings, then try again.'} Camera images stay on your device.</p></div>}
-        <p className="privacy">Camera images stay on your device.</p>
-      </section>
     </>}
   </main>;
 }

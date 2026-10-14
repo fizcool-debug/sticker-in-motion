@@ -25,13 +25,13 @@ try {
     };
   });
   await page.goto((process.env.CET_TEST_ORIGIN || 'http://localhost:5173') + '/');
-  await page.getByText('CET is in motion',{exact:true}).waitFor({timeout:60000});
+  await page.getByText('CET is in motion',{exact:false}).waitFor({state:'attached',timeout:60000});
   await page.getByRole('button',{name:'Replay animation'}).click();
   await page.screenshot({path:'work/qa/synthetic-tracking.png'});
   await page.evaluate(() => window.showSyntheticSticker=false);
-  await page.getByText('Bring the sticker back into view',{exact:true}).waitFor({timeout:30000});
+  await page.locator('[data-scan-state="lost"]').waitFor({state:'attached',timeout:30000});
   await page.evaluate(() => window.showSyntheticSticker=true);
-  await page.getByText('CET is in motion',{exact:true}).waitFor({timeout:30000});
+  await page.getByText('CET is in motion',{exact:false}).waitFor({state:'attached',timeout:30000});
   await page.getByRole('button',{name:'Preview',exact:false}).click();
   await page.waitForFunction(() => window.syntheticStopped);
   if(errors.length) throw Error(errors.join('\n'));

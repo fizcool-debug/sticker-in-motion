@@ -126,7 +126,7 @@ White actions and warm gray supporting text sit on near-black ink; mint indicate
 ### Hierarchy
 - **Display:** fluid preview heading with tight line height.
 - **Headline:** scanner status; reduced to 24px on narrow screens at most 650px tall.
-- **Identity:** semibold top-bar CET text with the tightest tracking.
+- **Identity:** semibold top-bar app identity with the tightest tracking.
 - **Body:** status and preview explanation; status copy is limited to 52ch.
 - **Label:** text actions, metadata, tips, and preview notes; tips use line height 1.55.
 - **Caption:** privacy line and Player caption. The top-bar descriptor is a separate 13px supporting label.
@@ -166,7 +166,7 @@ Confident, spare controls give recovery and replay a clear action.
 The status surface and Player frame are solid and flat. The desktop status surface uses rounded control corners; its mobile form spans the width. The Player clips its square content within a 1px divider border.
 
 ### Navigation
-The top bar holds the CET text identity, muted descriptor, and either a Preview text action or camera icon returning to the scanner. Preview is a separate hash state. The artwork link is a centered underlined text link with 12px padding.
+The preview-only top bar holds the app identity and a camera icon returning to the scanner. The scanner has no top bar. Preview is a separate hash state. The artwork link is a centered underlined text link with 12px padding.
 
 ### Recognition Guide and Status
 Open corners frame the sticker without a closed box. Mint guide corners and a mint dot accompany the found state. Status announces changes through a polite live region. Loading, refusal, and pause show a camera placeholder; refusal and pause add a primary retry or resume control. Tips expand in place.
@@ -196,3 +196,7 @@ The preview now has a labeled native sticker selector with two options. Red No R
 ## Android adaptation
 
 Preserve the camera-led artwork and generic app identity. Android permission copy replaces Safari instructions inside the native runtime. Native system Back handles Preview and tips while the scanner root retains system behavior. Capacitor SystemBars injects safe-area variables used by the interface, including cutouts in landscape. Android font scale is applied through WebView text zoom. The launcher and splash use a generic outlined sticker/scanning mark, not the CET logo. Android QA must come from the emulator or hardware; browser captures alone do not establish native behavior.
+
+## Camera-only refinement — October 14
+
+The user requested mostly camera with no unnecessary top/bottom UI. This scanner specification supersedes the earlier panel-based scanner description. Recovery controls remain available only when needed; tips and persistent privacy information are in Preview. No tracking or animation assets were changed. Native emulator screenshots at normal/1.3 text scale and landscape were inspected; both animation previews and tracking fixtures passed.

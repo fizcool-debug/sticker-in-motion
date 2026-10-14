@@ -21,9 +21,6 @@ try {
     assert.equal(await page.title(), 'Sticker in Motion');
     assert.ok(!(await page.locator('body').innerText()).includes('CET'), 'Scanner must not use the test sticker as its identity');
     await page.screenshot({path:`work/qa/${name}-camera.png`});
-    await page.getByRole('button',{name:'Scanning tips'}).click();
-    await page.getByText('Use the original print',{exact:false}).waitFor();
-    await page.getByRole('button',{name:'Close tips'}).click();
     await page.getByRole('button',{name:'Preview',exact:false}).click();
     await page.getByLabel('Preview sticker').selectOption('cet');
     await page.getByRole('button',{name:'Play video'}).waitFor({timeout:30000});

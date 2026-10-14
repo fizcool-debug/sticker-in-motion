@@ -54,3 +54,7 @@ Android is now the primary target. The existing React/MindAR app is bundled insi
 Requirements: Node 24, JDK 21, Android SDK 36 with build tools, and an up-to-date Android System WebView on the phone. Set JAVA_HOME and ANDROID_HOME for your machine, then run npm install --ignore-scripts and npm run android:apk. The APK is copied to artifacts/Sticker-in-Motion-debug.apk. npm run android:open opens the native project in Android Studio. Capacitor configuration is capacitor.config.ts; native source is android/.
 
 The debug APK is for sideload testing. Google Play distribution will require a release signing key, an app bundle, store details and device validation. The application keeps image processing on-device. Camera access is required; audio/storage permissions are not requested. System Back returns from Preview or closes tips, then delegates to the Android system at the scanner root. Backgrounding stops the camera; Resume reopens it. Native safe-area CSS variables and Android font scale are respected.
+
+## Camera-only update
+
+Version 1.1 removes the scanner header/footer. The camera fills the screen with a small preview button; replay appears only while recognized. The faint guide disappears after recognition and guidance clears after four seconds. Error/pause recovery remains actionable. Tips and privacy information are available in Preview. Manual-test APK: artifacts/Sticker-in-Motion-camera.apk.

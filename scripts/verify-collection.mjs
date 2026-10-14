@@ -33,13 +33,13 @@ try {
   const stream=canvas.captureStream(20);const track=stream.getVideoTracks()[0];const stop=track.stop.bind(track);track.stop=()=>{clearInterval(timer);window.syntheticStopped=true;stop();};return stream;
  };});
  await page.goto(origin+'/');
- await page.getByText('Red No Rush is in motion',{exact:true}).waitFor({timeout:60000});
+ await page.getByText('Red No Rush is in motion',{exact:false}).waitFor({state:'attached',timeout:60000});
  await page.getByRole('button',{name:'Replay animation'}).click();
  await page.screenshot({path:'work/qa/red-tracking-frame-a.png'});
  await page.waitForTimeout(500);await page.screenshot({path:'work/qa/red-tracking-frame-b.png'});
- await page.evaluate(()=>window.syntheticTarget=-1);await page.getByText('Bring the sticker back into view',{exact:true}).waitFor({timeout:30000});
- await page.evaluate(()=>window.syntheticTarget=1);await page.getByText('CET is in motion',{exact:true}).waitFor({timeout:30000});
- await page.evaluate(()=>window.syntheticTarget=0);await page.getByText('Red No Rush is in motion',{exact:true}).waitFor({timeout:30000});
+ await page.evaluate(()=>window.syntheticTarget=-1);await page.locator('[data-scan-state="lost"]').waitFor({state:'attached',timeout:30000});
+ await page.evaluate(()=>window.syntheticTarget=1);await page.getByText('CET is in motion',{exact:false}).waitFor({state:'attached',timeout:30000});
+ await page.evaluate(()=>window.syntheticTarget=0);await page.getByText('Red No Rush is in motion',{exact:false}).waitFor({state:'attached',timeout:30000});
  await page.getByRole('button',{name:'Preview',exact:false}).click();await page.waitForFunction(()=>window.syntheticStopped);
  assert.deepEqual(errors,[]);
  const result={syntheticCamera:true,redDetection:true,cetDetection:true,switching:true,loss:true,reacquisition:true,replay:true,cameraCleanup:true,pageErrors:errors};await writeFile('work/qa/collection-results.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));
