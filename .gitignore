@@ -7,3 +7,4 @@ work/
 artifacts/
 *.jks
 *.keystore
+.idea/

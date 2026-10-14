@@ -12,12 +12,19 @@ export type StickerDefinition = {
   compositionWidth: number;
   compositionHeight: number;
   videoFile?: string;
+  renderMode?: 'video';
 };
 
 // CET is the first test asset, not the app's identity. Additional stickers
 // need their own animation and a compiled target before joining this list.
 export const targetFile = '/stickers/collection.mind';
 export const stickers: StickerDefinition[] = [{
+  id: 'garden-fizcool', name: 'Fizcool Garden', assetBase: '/stickers/garden-fizcool',
+  targetFile, targetIndex: 2, aspectRatio: 1,
+  printedSize: '', animationName: 'Garden scatter',
+  durationInFrames: 180, fps: 30, compositionWidth: 1080, compositionHeight: 1080,
+  videoFile: '/stickers/garden-fizcool/animation.mp4', renderMode: 'video',
+}, {
   id: 'red-no-rush', name: 'Red No Rush', assetBase: '/stickers/red-no-rush',
   targetFile, targetIndex: 0, aspectRatio: 1179 / 1184,
   printedSize: '', animationName: 'Original animation',

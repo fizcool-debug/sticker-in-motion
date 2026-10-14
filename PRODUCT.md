@@ -20,7 +20,7 @@ Current target: Redmi Turbo 5 Android phone. The user switched from the web app 
 
 ## Brand Commitments
 
-Provisional app name: Sticker in Motion. CET is only the first test sticker, not the app identity. Scanner copy is generic; sticker names appear only when recognized or selected for preview. The prototype contains Red No Rush and CET, with automatic recognition of either and one tracked sticker at a time.
+Provisional app name: Sticker in Motion. CET is only the first test sticker, not the app identity. Scanner copy is generic; sticker names appear only when recognized or selected for preview. The prototype contains Fizcool Garden, Red No Rush and CET, with automatic recognition of either and one tracked sticker at a time.
 
 Preserve the supplied CET test artwork, lettering, rainbow bar, and proportions. Approved animation for that sticker: rainbow sweep and subtle pulse. Do not change printed artwork to improve tracking without approval.
 
@@ -40,3 +40,7 @@ Current collection: CET uses its editable Remotion animation. Red No Rush uses t
 - Validate recognition against the unchanged print before scaling the collection.
 - Keep camera processing local.
 - Distinguish an animation preview from verified AR tracking.
+
+## Fizcool Garden asset
+
+The user supplied frame_0118.png as the unchanged recognition image and garden-fizcool-scatter.webm. After inspecting the low-frame-rate WebM, the user approved the complete 180 PNG sequence at 30 fps (6 seconds). Original image, WebM and frame archive are preserved in assets/source/garden-fizcool. Garden uses an opaque H.264 video texture for AR and preview; existing CET/Red No Rush atlases remain unchanged. Target indices remain Red No Rush 0, CET 1, Garden 2.

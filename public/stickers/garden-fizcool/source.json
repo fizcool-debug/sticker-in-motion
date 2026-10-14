@@ -1,0 +1,14 @@
+{
+  "image": "frame_0118.png",
+  "suppliedVideo": "garden-fizcool-scatter.webm",
+  "animationSource": "180 PNG frames, user approved 30 fps",
+  "fps": 30,
+  "frames": 180,
+  "durationSeconds": 6,
+  "size": [
+    1080,
+    1080
+  ],
+  "audio": false,
+  "alpha": false
+}

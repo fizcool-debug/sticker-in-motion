@@ -58,3 +58,9 @@ The debug APK is for sideload testing. Google Play distribution will require a r
 ## Camera-only update
 
 Version 1.1 removes the scanner header/footer. The camera fills the screen with a small preview button; replay appears only while recognized. The faint guide disappears after recognition and guidance clears after four seconds. Error/pause recovery remains actionable. Tips and privacy information are available in Preview. Manual-test APK: artifacts/Sticker-in-Motion-camera.apk.
+
+## Fizcool Garden — Android 1.2
+
+The third sticker uses the full supplied PNG sequence: 180 frames at the user-approved 30 fps, six seconds at 1080 square. Its original frame_0118.png is the print/recognition target, and target index 2 joins Red No Rush (0) and CET (1). Preview defaults to Fizcool Garden. Garden uses a Three.js VideoTexture instead of retaining 180 full frames as atlases; it starts/replays on detection, pauses on loss, and releases the video decoder/frame callbacks on cleanup. Other stickers retain their existing atlas playback.
+
+Original files and a complete frames.zip are in assets/source/garden-fizcool. Run scripts/prepare-garden.py with Python/Pillow and FFmpeg to regenerate animation.mp4 and target assets; then run scripts/compile-collection.mjs against npm run dev on port 5173 to regenerate the three-image collection. The standalone supplied WebM contained six frames at 1 fps and was preserved but not used as playback. Test APK: artifacts/Sticker-in-Motion-garden.apk, version 1.2/code 3.

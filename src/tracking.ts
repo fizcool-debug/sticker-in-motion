@@ -9,11 +9,13 @@ export async function startTracker(container: HTMLDivElement, signal: AbortSigna
   if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
   type Manifest = { sheets: string[]; fps: number; frames: number; columns: number; rows: number };
   const sheets: THREE.Texture[] = [];
+  const videos: HTMLVideoElement[] = [];
+  const videoCallbacks = new Map<HTMLVideoElement, number>();
   let ar: InstanceType<typeof MindARThree> | undefined;
   const geometries: THREE.PlaneGeometry[] = [];
   const materials: THREE.MeshBasicMaterial[] = [];
   let stopped = false;
-  let active: { began: number } | undefined;
+  let active: { began: number; video?: HTMLVideoElement } | undefined;
   const stop = () => {
     if (stopped) return;
     stopped = true;
@@ -22,14 +24,50 @@ export async function startTracker(container: HTMLDivElement, signal: AbortSigna
     ar?.controller?.worker?.terminate();
     if (ar?.resizeHandler) window.removeEventListener('resize', ar.resizeHandler);
     (ar?.video?.srcObject as MediaStream | null)?.getTracks().forEach(t => t.stop());
+    videos.forEach(video => {
+      video.pause();
+      const callback = videoCallbacks.get(video);
+      if (callback !== undefined) video.cancelVideoFrameCallback(callback);
+      video.removeAttribute('src'); video.load();
+    });
+    videoCallbacks.clear();
     geometries.forEach(g => g.dispose()); materials.forEach(m => m.dispose()); sheets.forEach(t => t.dispose());
     ar?.renderer.dispose(); ar?.renderer.forceContextLoss();
     container.replaceChildren();
   };
   signal.addEventListener('abort', stop, { once: true });
   try {
-    const assets: { sticker: StickerDefinition; manifest: Manifest; textures: THREE.Texture[] }[] = [];
+    const assets: { sticker: StickerDefinition; manifest?: Manifest; textures: THREE.Texture[]; video?: HTMLVideoElement }[] = [];
     for (const sticker of stickers) {
+      if (sticker.renderMode === 'video' && sticker.videoFile) {
+        const video = document.createElement('video');
+        video.muted = true; video.defaultMuted = true; video.playsInline = true;
+        video.loop = true; video.preload = 'auto'; videos.push(video);
+        await new Promise<void>((resolve, reject) => {
+          const clean = () => { clearTimeout(timeout); video.removeEventListener('loadeddata', ready); video.removeEventListener('error', failed); signal.removeEventListener('abort', cancelled); };
+          const ready = () => { clean(); resolve(); };
+          const failed = () => { clean(); reject(Error('The animation could not load. Restart the app and try again.')); };
+          const cancelled = () => { clean(); reject(new DOMException('Cancelled', 'AbortError')); };
+          const timeout = setTimeout(failed, 30000);
+          video.addEventListener('loadeddata', ready, { once: true });
+          video.addEventListener('error', failed, { once: true });
+          signal.addEventListener('abort', cancelled, { once: true });
+          if (signal.aborted) { cancelled(); return; }
+          video.src = sticker.videoFile!; video.load();
+        });
+        if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+        if ('requestVideoFrameCallback' in video) {
+          const requestFrame = video.requestVideoFrameCallback.bind(video);
+          video.requestVideoFrameCallback = callback => {
+            if (stopped) return 0;
+            const id = requestFrame(callback); videoCallbacks.set(video, id); return id;
+          };
+        }
+        const texture = new THREE.VideoTexture(video);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        sheets.push(texture); assets.push({ sticker, textures: [texture], video });
+        continue;
+      }
       const manifest = await fetch(`${sticker.assetBase}/atlas.json`, { signal }).then(r => {
         if (!r.ok) throw Error('The animation could not load. Check your connection and try again.');
         return r.json() as Promise<Manifest>;
@@ -57,7 +95,7 @@ export async function startTracker(container: HTMLDivElement, signal: AbortSigna
       if (stopped || signal.aborted) { ar?.controller?.stopProcessVideo(); ar?.controller?.worker?.terminate(); }
     };
     ar.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    const animations = assets.map(({ sticker, manifest, textures }) => {
+    const animations = assets.map(({ sticker, manifest, textures, video }) => {
     const anchor = ar!.addAnchor(sticker.targetIndex);
     const stabilizer = new PoseStabilizer();
     const stabilizedGroup = new THREE.Group();
@@ -70,9 +108,10 @@ export async function startTracker(container: HTMLDivElement, signal: AbortSigna
     geometries.push(geometry); materials.push(material);
     // Image-relative depth: .18 of the sticker width (roughly 18 mm for this print).
     const plane = new THREE.Mesh(geometry, material); plane.position.z = .18; stabilizedGroup.add(plane);
-    const animation = { anchor, stabilizer, stabilizedGroup, material, manifest, textures, began: performance.now(), previousFrame: -1 };
-    anchor.onTargetFound = () => { stabilizer.reset(); animation.began = performance.now(); active = animation; update('found', sticker); };
-    anchor.onTargetLost = () => { stabilizedGroup.visible = false; stabilizer.reset(); if (active === animation) { active = undefined; update('lost'); } };
+    const animation = { anchor, stabilizer, stabilizedGroup, material, manifest, textures, video, began: performance.now(), previousFrame: -1 };
+    const play = () => { if (video) { video.currentTime = 0; void video.play().catch(() => video.pause()); } };
+    anchor.onTargetFound = () => { stabilizer.reset(); animation.began = performance.now(); active = animation; play(); update('found', sticker); };
+    anchor.onTargetLost = () => { video?.pause(); stabilizedGroup.visible = false; stabilizer.reset(); if (active === animation) { active = undefined; update('lost'); } };
     return animation;
     });
     const target = await fetch(targetFile, { signal });
@@ -96,6 +135,7 @@ export async function startTracker(container: HTMLDivElement, signal: AbortSigna
       stabilizedGroup.visible = anchor.group.visible;
       if (stabilizedGroup.visible) {
         stabilizedGroup.matrix.copy(stabilizer.update(anchor.group.matrix, performance.now()));
+      if (manifest) {
       const frame = Math.floor((performance.now() - animation.began) / 1000 * manifest.fps) % manifest.frames;
       if (frame !== animation.previousFrame) {
         const sheetFrame = frame % (manifest.columns * manifest.rows);
@@ -105,10 +145,11 @@ export async function startTracker(container: HTMLDivElement, signal: AbortSigna
       }
       }
       }
+      }
       ar.renderer.render(ar.scene, ar.camera);
     });
     update('scanning');
-    return { stop, replay() { if (active) active.began = performance.now(); } };
+    return { stop, replay() { if (active) { active.began = performance.now(); const video = active.video; if (video) { video.currentTime = 0; void video.play().catch(() => video.pause()); } } } };
   } catch (error) {
     stop();
     if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
