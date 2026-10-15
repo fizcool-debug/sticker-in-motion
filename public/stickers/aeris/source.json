@@ -1,0 +1,15 @@
+{
+  "source": "assets/source/aeris/aeris.svg",
+  "recognition": "Original SVG rendered using its specified Rozha One font, without cropping",
+  "composition": "AerisWindow",
+  "frames": 300,
+  "fps": 30,
+  "durationSeconds": 10,
+  "size": [
+    810,
+    1170
+  ],
+  "audio": false,
+  "alpha": false,
+  "targetIndex": 3
+}

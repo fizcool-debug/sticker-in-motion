@@ -42,3 +42,15 @@ Removed scanner header, bottom panel, visible print metadata and permanent priva
 ## Fizcool Garden
 
 Encoded exactly 180 source PNG frames into a 1080 by 1080 H.264 MP4, 30 fps, 6.0 seconds; ffprobe confirmed frame count, dimensions, fps and duration. Garden recognition features per matching scale: 121,124,122,118,111,104,95,83,72,61,46,40; tracking points 12,8. Native Android emulator fixture passed Garden preview playback, VideoTexture autoplay, replay/reset, pause on target loss, decoder/source cleanup when leaving scanning, and switching among all three registered targets, with no page errors. Preview and bloom-stage AR screenshots were inspected. The retained full-camera UI and previous targets are unchanged. Real Redmi/print tracking remains to be tested manually. Signed debug APK build/verification passed.
+
+## Aeris - October 15, 2026 / v0.2
+
+User approved the Remotion animation and requested mapping it to the supplied SVG. The original SVG is retained byte-for-byte (SHA-256 6216946b02c48b5d39797f4fbd741b14a854720c267eb25edafab66c38914a2d). The recognition target is a rasterization of that original artwork with its specified Rozha One font; it is not an animation frame. The target and animation preserve the 162:234 portrait proportions. Remotion rendered 300 frames at 30 fps, 810 by 1170; ffprobe confirmed H.264, 10.000 seconds, 300 frames, and those dimensions/rate.
+
+Target index 3 is Aeris; earlier indices remain unchanged. Matching features: 447,453,441,430,408,365,263,188,130,71; tracking points 34,30. These counts are compiler diagnostics, not a measurement of real-print reliability.
+
+`scripts/verify-aeris-android.mjs` passed in the actual Android emulator WebView: portrait preview dimensions and layout ratio, original-artwork view, detection of Aeris using a synthetic camera, VideoTexture autoplay, replay, pause on loss, reacquisition, switching to each of the other three stickers and back, video source/decoder cleanup, and no page errors. Preview and tracked-animation screenshots were inspected. The first test was interrupted by an emulator System WebView package update; the test passed after reopening the app against the updated WebView.
+
+Android build and debug APK signature verification passed, versionName 0.2 / versionCode 4. APK SHA-256: e6f5fd19172ac317c0bfcfae0c30a973a43dfa4dddc8e21f6facd36296fd6ed6. Physical Redmi Turbo 5 recognition, alignment, stability, and sustained performance remain to be tested manually.
+
+The standard Android regression script also passed on this APK: live 480 by 640 camera, preview playback, artwork/native Back, background camera cleanup/resume, 1.3 font scale, landscape, and no page errors. Its initial invocation started on the previous test's Preview route and timed out waiting for scanning; resetting the test route resolved that harness precondition.

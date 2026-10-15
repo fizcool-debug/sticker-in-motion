@@ -21,19 +21,20 @@ The current APK is a debug-signed build for sideload testing. It isn't on Google
 
 | Sticker | Animation | Playback |
 | --- | --- | --- |
+| Aeris | Goat emerges from the window and looks around | 300 frames at 30 fps, 10 seconds |
 | Fizcool Garden | Garden scatter | 180 frames at 30 fps, 6 seconds |
 | Red No Rush | Original animation | 8 frames at 6 fps, about 1.33 seconds |
 | CET | Rainbow sweep and subtle pulse | 60 frames at 15 fps, 4 seconds |
 
-All three are bundled in the APK, including their recognition targets and animations. The scanner recognises them automatically, tracks one at a time, and restarts playback when a target is found. Preview opens on Fizcool Garden by default.
+All four are bundled in the APK, including their recognition targets and animations. The scanner recognises them automatically, tracks one at a time, and restarts playback when a target is found. Preview opens on Aeris by default.
 
-This works with the registered artwork. It doesn't turn any random image into an animated sticker. CET's print is 4 × 4 inches; print dimensions for the other two haven't been set yet.
+This works with the registered artwork. It doesn't turn any random image into an animated sticker. CET's print is 4 × 4 inches; print dimensions for the other stickers haven't been set yet.
 
 ## How I built it
 
 I use React and TypeScript for the interface, MindAR for image tracking, and Three.js for rendering the animation over the camera feed. Capacitor packages everything as an Android app, with the assets stored locally. Once installed, scanning doesn't need a hosted page or an internet connection.
 
-Garden plays through a Three.js video texture. Red No Rush and CET use sprite atlases. The animation sits slightly above the print, and pose smoothing helps reduce shaking as the camera moves.
+Aeris and Garden play through Three.js video textures. Red No Rush and CET use sprite atlases. The animation sits slightly above the print, and pose smoothing helps reduce shaking as the camera moves.
 
 Camera frames are processed on the phone and aren't uploaded. The app doesn't ask for microphone or storage access. It uses Android System WebView for rendering and tracking, with no ARCore dependency.
 
@@ -78,13 +79,15 @@ To edit CET's animation, install the dependencies in `animation/`, then run `npm
 
 Garden's source is the full 180-frame PNG sequence. `scripts/prepare-garden.py` rebuilds its video and target assets using Python/Pillow and FFmpeg. Red No Rush's atlas is prepared with `scripts/prepare-red.py` from extracted video frames.
 
-Adding a sticker means adding its artwork, animation assets, and entry in `src/stickers.ts`, then recompiling `public/stickers/collection.mind`. The current target order is Red No Rush (0), CET (1), and Fizcool Garden (2).
+Adding a sticker means adding its artwork, animation assets, and entry in `src/stickers.ts`, then recompiling `public/stickers/collection.mind`. The current target order is Red No Rush (0), CET (1), Fizcool Garden (2), and Aeris (3).
+
+I animated Aeris's SVG parts individually in the `AerisWindow` Remotion composition: the head emerges, glances both ways and blinks, with secondary horn, sparkle, lettering and floral motion. `AerisSticker` renders the supplied original SVG for recognition, using its specified Rozha One font. The original aspect ratio is retained in both the print and animation. Editable source and rebuilding instructions are in [animation/AERIS-PREVIEW.md](animation/AERIS-PREVIEW.md).
 
 To rebuild the collection, keep `npm run dev` running on port 5173 and run `node scripts/compile-collection.mjs` in another terminal. The compiler and verification scripts currently include paths for my local Playwright/Edge setup, so those need adjusting on another machine.
 
 ## Testing so far
 
-I've checked Android builds and APK signatures, and run emulator checks for camera permissions, preview playback, Back navigation, background/resume behaviour, landscape, and larger text. Synthetic camera tests inside Android WebView have also covered recognition, switching between the three stickers, target loss, reacquisition, replay, and cleanup.
+I've checked Android builds and APK signatures, and run emulator checks for camera permissions, preview playback, Back navigation, background/resume behaviour, landscape, and larger text. Synthetic camera tests inside Android WebView have also covered recognition, switching between all four stickers, target loss, reacquisition, replay, and cleanup.
 
 Those checks don't tell me how well the latest build tracks a real print on a real phone. Manual testing on the Redmi Turbo 5 is still pending, especially alignment, shaking, glare, heat, and sustained performance. The full test history and known limits are in [VALIDATION.md](VALIDATION.md).
 

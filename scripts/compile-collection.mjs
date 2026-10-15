@@ -8,7 +8,7 @@ try {
  await writeFile('work/compiler.html', `<!doctype html><html><head><title>Sticker collection compiler</title></head><body><p id="status">Compiling original artwork…</p><script type="module">
  import { Compiler } from '/node_modules/mind-ar/dist/mindar-image.prod.js';
  try {
- const images=await Promise.all(['/stickers/red-no-rush/target.jpg','/stickers/cet/target.jpg','/stickers/garden-fizcool/target.jpg'].map(async src=>{const im=new Image();im.src=src;await im.decode();return im;}));
+ const images=await Promise.all(['/stickers/red-no-rush/target.jpg','/stickers/cet/target.jpg','/stickers/garden-fizcool/target.jpg','/stickers/aeris/target.jpg'].map(async src=>{const im=new Image();im.src=src;await im.decode();return im;}));
  const compiler=new Compiler(); const data=await compiler.compileImageTargets(images,p=>document.querySelector('#status').textContent='Compiling '+p.toFixed(0)+'%');
  window.result=Array.from(compiler.exportData());
  window.features=data.map(d=>({matching:d.matchingData.map(k=>k.maximaPoints.length+k.minimaPoints.length),tracking:d.trackingData.map(k=>k.points.length)}));

@@ -19,6 +19,12 @@ export type StickerDefinition = {
 // need their own animation and a compiled target before joining this list.
 export const targetFile = '/stickers/collection.mind';
 export const stickers: StickerDefinition[] = [{
+  id: 'aeris', name: 'Aeris', assetBase: '/stickers/aeris',
+  targetFile, targetIndex: 3, aspectRatio: 162 / 234,
+  printedSize: '', animationName: 'Goat at the window',
+  durationInFrames: 300, fps: 30, compositionWidth: 810, compositionHeight: 1170,
+  videoFile: '/stickers/aeris/animation.mp4', renderMode: 'video',
+}, {
   id: 'garden-fizcool', name: 'Fizcool Garden', assetBase: '/stickers/garden-fizcool',
   targetFile, targetIndex: 2, aspectRatio: 1,
   printedSize: '', animationName: 'Garden scatter',

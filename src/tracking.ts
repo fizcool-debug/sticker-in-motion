@@ -102,7 +102,7 @@ export async function startTracker(container: HTMLDivElement, signal: AbortSigna
     stabilizedGroup.matrixAutoUpdate = false;
     stabilizedGroup.visible = false;
     ar!.scene.add(stabilizedGroup);
-    // The video is square; keep its original proportions over the nearly square print.
+    // Preserve each animation's proportions, including portrait sticker artwork.
     const geometry = new THREE.PlaneGeometry(1, sticker.compositionHeight / sticker.compositionWidth);
     const material = new THREE.MeshBasicMaterial({ map: textures[0], transparent: true, side: THREE.DoubleSide, depthWrite: false, toneMapped: false });
     geometries.push(geometry); materials.push(material);
