@@ -88,16 +88,6 @@ I've checked Android builds and APK signatures, and run emulator checks for came
 
 Those checks don't tell me how well the latest build tracks a real print on a real phone. Manual testing on the Redmi Turbo 5 is still pending, especially alignment, shaking, glare, heat, and sustained performance. The full test history and known limits are in [VALIDATION.md](VALIDATION.md).
 
-## Publishing APKs
-
-I publish completed Android builds to [GitHub Releases](https://github.com/fizcool-debug/sticker-in-motion/releases), with the source pushed first. APKs and signing keys stay out of Git.
-
-The first GitHub release is `v0.1`, which packages Android version `1.2` / code `3`. Subsequent releases continue with `v0.2`, `v0.3`, and so on, matching the Android `versionName` and increasing `versionCode` each time.
-
-After building, validating, and pushing the source, publish with the full remote source commit and a release notes file:
-
-```powershell
-npm run android:publish -- -Version 0.2 -ApkPath artifacts/Sticker-in-Motion-debug.apk -TargetCommit <full-remote-source-commit> -NotesFile <release-notes.md>
 ```
 
 The script creates a draft release, verifies the uploaded APK's size and SHA-256, and then publishes it. Release notes include the changes, testing limits, APK hash, and signing type. Published releases and assets stay unchanged; intermediate development builds stay local. See [AGENTS.md](AGENTS.md) for the release workflow.
