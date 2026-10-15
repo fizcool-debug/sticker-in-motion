@@ -1,78 +1,103 @@
 # Sticker in Motion
 
-Camera-first React/TypeScript web prototype for the supplied 4 × 4 inch CET sticker. First physical test device: iPhone 16, Safari.
+I built Sticker in Motion to bring my printed stickers to life. Point your Android phone at a supported sticker and its animation plays above the print, following it as you move the camera.
 
-CET is the first test sticker, not the app identity. App copy and metadata are generic. `src/stickers.ts` owns sticker-specific names, dimensions, asset paths, tracking target settings, and motion metadata. The scanner displays a sticker name only after recognition; the preview displays the selected asset's name. Two stickers are registered; the scanner recognizes either automatically, and the preview selector offers both. Future additions need supplied artwork, animation assets, a registry entry, and recompilation of the collection target.
+The app opens straight into a full-screen camera. There's a small preview button to browse the collection, and a replay button appears when a sticker is recognised. I wanted the artwork to be the focus, with as little UI in the way as possible.
 
-## Run locally
+## Install it
 
-Node 24 is used in this workspace. Install with `npm install --ignore-scripts`, then run `npm run dev`. Open the printed localhost URL on this computer. Phone camera testing requires the deployed HTTPS URL; an ordinary HTTP Wi-Fi address does not grant camera access.
+Download the APK from [GitHub Releases](https://github.com/fizcool-debug/sticker-in-motion/releases). This repository is private, so you'll need access to download it.
 
-Run `npm run build` for the static production build in `dist`. Source is in `src`; the sticker target and animation assets are in `public/stickers/cet`.
+1. Open the APK on your Android phone and allow installation from that source if Android asks.
+2. Launch **Sticker in Motion** and allow camera access.
+3. Point the camera at one of the supported prints. Keep the whole sticker visible, use even light, and hold steady while it finds the image.
+4. Move the phone gently to see the animation above the sticker. Tap replay to start it again.
 
-## Edit the animation
+You can also open Preview to watch each animation and view its original artwork without scanning a print. If you leave the app, the camera stops; tap **Resume camera** when you return.
 
-Run `npm install` inside `animation` on a fresh checkout, then `npm run studio` from the root. Composition: `CetRainbow`, editable in `animation/src/CetMotion.tsx`. Approved motion is a rainbow reveal with subtle pulse, 4 seconds at 15 fps.
+The current APK is a debug-signed build for sideload testing. It isn't on Google Play. The app targets Android 7.0 and later and needs camera access and an up-to-date Android System WebView; tracking performance still needs checking on real devices.
 
-AR playback uses transparent PNG sprite atlases rather than relying on transparent-video decoding in Safari. Four 1536 × 1536 RGBA sheets contain sixty 384 × 384 frames. The sheets total about 0.5 MB compressed and about 36 MiB of base texture storage on the GPU; mipmaps are disabled. This is a prototype budget, to be measured on the actual phone.
+## The stickers
 
-To regenerate: render `npx remotion render src/index.ts CetRainbow out/frames --sequence --image-format=png` from `animation`, then run `scripts/pack-atlas.py` with Python/Pillow. Preview motion before replacing playback assets.
+| Sticker | Animation | Playback |
+| --- | --- | --- |
+| Fizcool Garden | Garden scatter | 180 frames at 30 fps, 6 seconds |
+| Red No Rush | Original animation | 8 frames at 6 fps, about 1.33 seconds |
+| CET | Rainbow sweep and subtle pulse | 60 frames at 15 fps, 4 seconds |
 
-## First phone test
+All three are bundled in the APK, including their recognition targets and animations. The scanner recognises them automatically, tracks one at a time, and restarts playback when a target is found. Preview opens on Fizcool Garden by default.
 
-1. Open the HTTPS Site directly in Safari, signed into the owner account if the Site is private.
-2. Allow Camera. Place the unchanged 4-inch square print flat in even light.
-3. Keep all four edges visible; move closer and hold steady until CET is detected.
-4. Move the phone gently. Verify alignment, rainbow sweep, pulse, and replay.
-5. Move away from the sticker and back to test loss and reacquisition. Open Preview to confirm the camera stops.
+This works with the registered artwork. It doesn't turn any random image into an animated sticker. CET's print is 4 × 4 inches; print dimensions for the other two haven't been set yet.
 
-The unchanged artwork has broad flat regions. Its compiled target contains modest feature counts (9 and 7 tracking points at the two tracking scales); physical recognition quality remains unverified. Do not alter the print without approval. Supplied original is preserved in `assets/source/cet-logo.png`. `print-preview.png` is a 1200-pixel square at 300 dpi, matching 4 inches when printed at actual size.
+## How I built it
 
-## Implementation notes
+I use React and TypeScript for the interface, MindAR for image tracking, and Three.js for rendering the animation over the camera feed. Capacitor packages everything as an Android app, with the assets stored locally. Once installed, scanning doesn't need a hosted page or an internet connection.
 
-The collection has Red No Rush at index 0 and CET at index 1, with one tracked at a time. The source manifest records physical width as 0.1016 meters; MindAR's image-relative rendering uses a unit-width plane, so this metadata does not imply measured world scale. Detection resets playback; losing the target hides the plane. Backgrounding stops scanning and requires Resume. The camera is never uploaded.
+Garden plays through a Three.js video texture. Red No Rush and CET use sprite atlases. The animation sits slightly above the print, and pose smoothing helps reduce shaking as the camera moves.
 
-The animated plane is raised by 0.18 sticker widths along the sticker normal, approximately 18 mm for a 4-inch print, rather than the initial almost-flush 0.004 offset. Pose stabilization interpolates position, quaternion rotation, and scale independently with elapsed-time-based smoothing. It adapts to deliberate movement and resets on reacquisition; matrix entries are not interpolated, avoiding shear. MindAR's filter beta is reduced from its default 1000 to 20. These are initial tuning values to evaluate on the phone.
+Camera frames are processed on the phone and aren't uploaded. The app doesn't ask for microphone or storage access. It uses Android System WebView for rendering and tracking, with no ARCore dependency.
 
-The Vite adapter preserves MindAR's resize handler reference so it can be removed on teardown. The tracker also terminates its worker, stops stream tracks, releases textures, and guards late camera-start completion. Review this adapter when changing MindAR versions.
+## Build it locally
 
-## Validation and limits
+My build setup uses Windows/PowerShell, Node.js 24, JDK 21, and Android SDK 36 with its build tools. Set `JAVA_HOME` and `ANDROID_HOME` to your local installations, then run:
 
-See VALIDATION.md. A successful build and synthetic camera test do not establish Safari or real-print reliability. Public upload tools, arbitrary-sticker animation, sound, and true 3D assets are outside this first prototype.
+```powershell
+npm install --ignore-scripts
+npm run android:apk
+```
 
-## Red No Rush collection update
+That builds the frontend, syncs it into the Android project, and creates:
 
-The collection now includes Red No Rush (index 0) and CET (index 1), with automatic recognition and one tracked target at a time. Preview defaults to Red No Rush and offers a sticker selector. The supplied MP4 is preserved unchanged: 2048 square, eight frames at 6 fps, 1.33 seconds, no audio or alpha. AR uses its original frames at the original timing, packed as 512px tiles in one 2048 by 1024 JPEG atlas (8 MiB base GPU storage, mipmaps disabled). The full 1179 by 1184 PNG is preserved for recognition; no crop or feature edits. New physical print dimensions were not supplied.
+```text
+artifacts/Sticker-in-Motion-debug.apk
+```
 
-Run node scripts/compile-collection.mjs with npm run dev on port 5173 to regenerate collection.mind. To regenerate the Red No Rush atlas, extract its video to work/red-frames/01.png through 08.png at 512 square using FFmpeg, then run scripts/prepare-red.py with Python/Pillow. src/stickers.ts owns the collection and target indices.
+To open the native project in Android Studio:
 
+```powershell
+npm run android:open
+```
 
-## Android app
+For a quick browser preview during development, use `npm run dev`. `npm run build` checks TypeScript and builds the frontend into `dist/`. Camera testing in a phone browser needs HTTPS; the Android APK bundles the app locally.
 
-Android is now the primary target. The existing React/MindAR app is bundled inside a Capacitor Android runtime, with both sticker targets and animations included locally. It uses the Android camera permission and Android System WebView; it does not depend on the hosted Site or use ARCore. App ID: com.fizcool.stickerinmotion. First test phone: Redmi Turbo 5.
+## Working on the artwork and animations
 
-Requirements: Node 24, JDK 21, Android SDK 36 with build tools, and an up-to-date Android System WebView on the phone. Set JAVA_HOME and ANDROID_HOME for your machine, then run npm install --ignore-scripts and npm run android:apk. The APK is copied to artifacts/Sticker-in-Motion-debug.apk. npm run android:open opens the native project in Android Studio. Capacitor configuration is capacitor.config.ts; native source is android/.
+The main files are:
 
-The debug APK is for sideload testing. Google Play distribution will require a release signing key, an app bundle, store details and device validation. The application keeps image processing on-device. Camera access is required; audio/storage permissions are not requested. System Back returns from Preview or closes tips, then delegates to the Android system at the scanner root. Backgrounding stops the camera; Resume reopens it. Native safe-area CSS variables and Android font scale are respected.
+| Path | What it contains |
+| --- | --- |
+| `src/stickers.ts` | Sticker names, target indices, asset paths, and animation settings |
+| `src/tracking.ts` | Image tracking and AR playback |
+| `public/stickers/` | Bundled targets, print previews, and playback assets |
+| `assets/source/` | Original artwork and animation sources |
+| `animation/` | Remotion project for CET's animation |
+| `android/` | Native Android project |
+| `capacitor.config.ts` | App identity and Android runtime settings |
 
-## Camera-only update
+To edit CET's animation, install the dependencies in `animation/`, then run `npm run studio` from the project root. The composition is `CetRainbow`, in `animation/src/CetMotion.tsx`. Render its PNG sequence and pack it with `scripts/pack-atlas.py` before replacing the playback assets.
 
-Version 1.1 removes the scanner header/footer. The camera fills the screen with a small preview button; replay appears only while recognized. The faint guide disappears after recognition and guidance clears after four seconds. Error/pause recovery remains actionable. Tips and privacy information are available in Preview. Manual-test APK: artifacts/Sticker-in-Motion-camera.apk.
+Garden's source is the full 180-frame PNG sequence. `scripts/prepare-garden.py` rebuilds its video and target assets using Python/Pillow and FFmpeg. Red No Rush's atlas is prepared with `scripts/prepare-red.py` from extracted video frames.
 
-## Fizcool Garden — Android 1.2
+Adding a sticker means adding its artwork, animation assets, and entry in `src/stickers.ts`, then recompiling `public/stickers/collection.mind`. The current target order is Red No Rush (0), CET (1), and Fizcool Garden (2).
 
-The third sticker uses the full supplied PNG sequence: 180 frames at the user-approved 30 fps, six seconds at 1080 square. Its original frame_0118.png is the print/recognition target, and target index 2 joins Red No Rush (0) and CET (1). Preview defaults to Fizcool Garden. Garden uses a Three.js VideoTexture instead of retaining 180 full frames as atlases; it starts/replays on detection, pauses on loss, and releases the video decoder/frame callbacks on cleanup. Other stickers retain their existing atlas playback.
+To rebuild the collection, keep `npm run dev` running on port 5173 and run `node scripts/compile-collection.mjs` in another terminal. The compiler and verification scripts currently include paths for my local Playwright/Edge setup, so those need adjusting on another machine.
 
-Original files and a complete frames.zip are in assets/source/garden-fizcool. Run scripts/prepare-garden.py with Python/Pillow and FFmpeg to regenerate animation.mp4 and target assets; then run scripts/compile-collection.mjs against npm run dev on port 5173 to regenerate the three-image collection. The standalone supplied WebM contained six frames at 1 fps and was preserved but not used as playback. Test APK: artifacts/Sticker-in-Motion-garden.apk, version 1.2/code 3.
+## Testing so far
 
-## GitHub APK releases
+I've checked Android builds and APK signatures, and run emulator checks for camera permissions, preview playback, Back navigation, background/resume behaviour, landscape, and larger text. Synthetic camera tests inside Android WebView have also covered recognition, switching between the three stickers, target loss, reacquisition, replay, and cleanup.
 
-Every completed Android release is published with its APK in the private repository's [GitHub Releases](https://github.com/fizcool-debug/sticker-in-motion/releases). Repository access is required to download it. APKs remain release assets, outside Git history. The first GitHub release is v0.1 and packages the existing Android 1.2/code 3 build; subsequent releases increment from v0.2 and align the Android versionName with the release version.
+Those checks don't tell me how well the latest build tracks a real print on a real phone. Manual testing on the Redmi Turbo 5 is still pending, especially alignment, shaking, glare, heat, and sustained performance. The full test history and known limits are in [VALIDATION.md](VALIDATION.md).
 
-Build and validate the APK, publish its source to GitHub, write release notes, then run:
+## Publishing APKs
+
+I publish completed Android builds to [GitHub Releases](https://github.com/fizcool-debug/sticker-in-motion/releases), with the source pushed first. APKs and signing keys stay out of Git.
+
+The first GitHub release is `v0.1`, which packages Android version `1.2` / code `3`. Subsequent releases continue with `v0.2`, `v0.3`, and so on, matching the Android `versionName` and increasing `versionCode` each time.
+
+After building, validating, and pushing the source, publish with the full remote source commit and a release notes file:
 
 ```powershell
 npm run android:publish -- -Version 0.2 -ApkPath artifacts/Sticker-in-Motion-debug.apk -TargetCommit <full-remote-source-commit> -NotesFile <release-notes.md>
 ```
 
-The publisher uses Git Credential Manager or GH_TOKEN, creates a draft, verifies the uploaded APK's size and SHA-256, then publishes it. Repeating the same release with the same APK is safe; published assets cannot be overwritten. Intermediate build iterations remain local. Follow AGENTS.md when delivering future releases.
+The script creates a draft release, verifies the uploaded APK's size and SHA-256, and then publishes it. Release notes include the changes, testing limits, APK hash, and signing type. Published releases and assets stay unchanged; intermediate development builds stay local. See [AGENTS.md](AGENTS.md) for the release workflow.
