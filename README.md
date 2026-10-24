@@ -69,9 +69,11 @@ Use **Node.js 24** and npm. No API key or account is required to run the app.
 ```sh
 git clone https://github.com/fizcool-debug/sticker-in-motion.git
 cd sticker-in-motion
-npm ci
+npm ci --ignore-scripts
 npm run dev
 ```
+
+The install skips dependency lifecycle scripts because MindAR includes a legacy Node-only canvas package; this app uses its browser implementation. Playwright browsers are installed explicitly when needed.
 
 Open the Vite URL, usually `http://localhost:5173`. Visit `/#preview` to browse the collection. Camera use on another device requires HTTPS; plain HTTP on a LAN address is not a secure camera context.
 
@@ -90,7 +92,7 @@ Install **JDK 21**, **Android SDK 36**, and **Android build-tools 36.0.0**. Set 
 On Windows:
 
 ```powershell
-npm ci
+npm ci --ignore-scripts
 npm run android:apk
 ```
 
@@ -99,7 +101,7 @@ The APK is copied to `artifacts/Sticker-in-Motion-debug.apk`.
 On macOS or Linux:
 
 ```sh
-npm ci
+npm ci --ignore-scripts
 npm run android:sync
 cd android
 ./gradlew assembleDebug

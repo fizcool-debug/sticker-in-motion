@@ -7,7 +7,7 @@ Thanks for helping improve the app. Start with a focused issue or pull request d
 Use Node.js 24 and npm:
 
 ```sh
-npm ci
+npm ci --ignore-scripts
 npx playwright install chromium
 npm run dev
 ```
