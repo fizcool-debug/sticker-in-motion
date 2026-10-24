@@ -4,7 +4,7 @@ import { chromium } from 'playwright';
 const serial=process.env.ANDROID_TEST_DEVICE||'emulator-5554';const adb=adbPath();const shot=async name=>writeFile(`work/qa/android/${name}.png`,execFileSync(adb,['-s',serial,'exec-out','screencap','-p'],{maxBuffer:16*1024*1024}));
 const b=await chromium.connectOverCDP('http://127.0.0.1:9222');try{
 const p=b.contexts()[0].pages()[0];const errors=[];p.on('pageerror',e=>errors.push(e.message));
-await p.locator('[data-scan-state="scanning"]').waitFor({timeout:45000});await p.getByRole('button',{name:'Preview stickers'}).click();await p.getByLabel('Preview sticker').selectOption('garden-fizcool');
+await p.locator('[data-scan-state="scanning"]').waitFor({timeout:45000});await p.getByRole('button',{name:'Preview stickers'}).click();await p.getByLabel('Preview sticker', { exact: true }).selectOption('garden-fizcool');
 await p.locator('.supplied-video').evaluate(v=>v.play());await p.waitForFunction(()=>document.querySelector('.supplied-video').currentTime>.3);const preview=await p.locator('.supplied-video').evaluate(v=>({duration:v.duration,width:v.videoWidth,height:v.videoHeight}));assert.equal(preview.duration,6);assert.equal(preview.width,1080);await shot('garden-preview');
 await p.evaluate(()=>{
 window.fixtureVideos=[];const create=document.createElement.bind(document);document.createElement=function(name,options){const el=create(name,options);if(name==='video')window.fixtureVideos.push(el);return el;};

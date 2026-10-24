@@ -10,7 +10,7 @@ try {
   const page=await browser.newPage({viewport});const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{navigator.mediaDevices.getUserMedia=async()=>{throw new DOMException('Denied','NotAllowedError');};});
   await page.goto(origin+'/#preview');
-  await page.getByLabel('Preview sticker').selectOption('red-no-rush');
+  await page.getByLabel('Preview sticker', { exact: true }).selectOption('red-no-rush');
   await page.waitForFunction(()=>document.querySelector('.supplied-video')?.readyState>=2);
   const metadata=await page.locator('.supplied-video').evaluate(async video=>{await video.play();return {width:video.videoWidth,height:video.videoHeight,duration:video.duration,loop:video.loop,muted:video.muted,inline:video.playsInline};});
   assert.equal(metadata.width,2048);assert.equal(metadata.height,2048);assert.ok(Math.abs(metadata.duration-8/6)<.02);assert.ok(metadata.loop&&metadata.muted&&metadata.inline);
@@ -18,7 +18,7 @@ try {
   await page.locator('.supplied-video').evaluate(video=>video.pause());
   await page.screenshot({path:`work/qa/${name}-red-preview.png`});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-  await page.getByLabel('Preview sticker').selectOption('cet');
+  await page.getByLabel('Preview sticker', { exact: true }).selectOption('cet');
   await page.getByRole('button',{name:'Play video'}).click();await page.getByRole('button',{name:'Pause video'}).waitFor();
   await page.getByRole('button',{name:'Back to scanner'}).click();await page.getByRole('button',{name:'Try camera again'}).waitFor();
   assert.ok(!(await page.locator('body').innerText()).includes('CET'));
