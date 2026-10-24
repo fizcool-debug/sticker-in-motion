@@ -8,3 +8,14 @@ artifacts/
 *.jks
 *.keystore
 .idea/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.pem
+*.key
+android/local.properties
+.openai/

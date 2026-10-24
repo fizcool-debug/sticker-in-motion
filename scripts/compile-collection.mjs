@@ -1,8 +1,7 @@
-import {createRequire} from 'node:module';
+import { browserOptions, appUrl } from './browser-tools.mjs';
 import {writeFile,mkdir} from 'node:fs/promises';
-const require=createRequire(import.meta.url);
-const {chromium}=require('C:/Users/Bhawesh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true});
+import { chromium } from 'playwright';
+const browser=await chromium.launch(browserOptions());
 try {
  await mkdir('work',{recursive:true});
  await writeFile('work/compiler.html', `<!doctype html><html><head><title>Sticker collection compiler</title></head><body><p id="status">Compiling original artwork…</p><script type="module">
@@ -15,8 +14,8 @@ try {
  }catch(e){window.failure=String(e);}
  </script></body></html>`);
  const page=await browser.newPage();
- await page.goto('http://localhost:5173/work/compiler.html');
- await page.waitForFunction(()=>window.result||window.failure,{timeout:240000});
+ await page.goto(`${appUrl}/work/compiler.html`);
+ await page.waitForFunction(()=>window.result||window.failure, null, { timeout: 240000 });
  const r=await page.evaluate(()=>({buffer:window.result,features:window.features,failure:window.failure}));
  if(r.failure)throw Error(r.failure);
  await writeFile('public/stickers/collection.mind',Buffer.from(r.buffer));

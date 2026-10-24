@@ -1,8 +1,7 @@
-import { createRequire } from 'node:module';
+import { browserOptions, appUrl } from './browser-tools.mjs';
 import { writeFile, mkdir } from 'node:fs/promises';
-const require = createRequire(import.meta.url);
-const { chromium } = require('C:/Users/Bhawesh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const browser = await chromium.launch({ executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', headless: true });
+import { chromium } from 'playwright';
+const browser = await chromium.launch(browserOptions());
 try {
   const studio = await browser.newPage();
   await studio.goto('http://localhost:3000/CetRainbow');
@@ -12,8 +11,8 @@ try {
   console.log('Remotion Studio composition verified');
   const page = await browser.newPage();
   page.on('pageerror', error => console.log('Compiler page error:', error.message));
-  await page.goto('http://localhost:5173/work/compiler.html');
-  await page.waitForFunction(() => window.result || window.failure, { timeout: 180000 });
+  await page.goto(`${appUrl}/work/compiler.html`);
+  await page.waitForFunction(() => window.result || window.failure, null, { timeout: 180000 });
   const result = await page.evaluate(() => ({buffer:window.result, features:window.features, failure:window.failure}));
   if (result.failure) throw Error(result.failure);
   await writeFile('public/stickers/cet/target.mind', Buffer.from(result.buffer));

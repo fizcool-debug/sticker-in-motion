@@ -36,7 +36,7 @@ function Invoke-GithubJson([string]$Method, [string]$Uri, $Payload) {
     Invoke-RestMethod @request
 }
 $repo = Invoke-GithubJson GET $apiRoot $null
-if ($repo.full_name -ne $repository -or -not $repo.private) { throw 'Expected the private sticker-in-motion repository.' }
+if ($repo.full_name -ne $repository) { throw 'Unexpected repository; refusing to publish.' }
 $commit = Invoke-GithubJson GET "$apiRoot/commits/$TargetCommit" $null
 if ($commit.sha -ne $TargetCommit) { throw 'The source commit is not available on GitHub.' }
 # The tag lookup returns drafts visible to the authenticated owner as well.

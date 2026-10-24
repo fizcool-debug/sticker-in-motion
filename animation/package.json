@@ -1,9 +1,13 @@
 {
-  "name": "remotion-scaffold",
+  "name": "sticker-in-motion-animations",
   "version": "1.0.0",
-  "description": "My Remotion video",
-  "repository": {},
-  "license": "UNLICENSED",
+  "description": "CET and Aeris animation compositions for Sticker in Motion",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fizcool-debug/sticker-in-motion.git",
+    "directory": "animation"
+  },
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.534",

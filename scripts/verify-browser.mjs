@@ -1,11 +1,10 @@
-import { createRequire } from 'node:module';
+import { browserOptions, appUrl } from './browser-tools.mjs';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
-const require = createRequire(import.meta.url);
-const { chromium } = require('C:/Users/Bhawesh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const browser = await chromium.launch({ executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', headless:true });
+import { chromium } from 'playwright';
+const browser = await chromium.launch(browserOptions());
 const results = [];
-const origin = process.env.CET_TEST_ORIGIN || 'http://localhost:5173';
+const origin = appUrl;
 try {
   await mkdir('work/qa',{recursive:true});
   for (const [name, viewport] of [['mobile',{width:393,height:852}],['desktop',{width:1440,height:900}]]) {

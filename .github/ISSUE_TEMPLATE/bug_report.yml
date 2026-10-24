@@ -1,0 +1,22 @@
+name: Bug report
+description: Report a reproducible problem
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include expected behaviour and steps to reproduce. Do not include private camera images or secrets.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Device and versions
+      description: Phone, Android, Android System WebView and app version, or browser/OS for a web issue.
+    validations:
+      required: true
+  - type: textarea
+    id: testing
+    attributes:
+      label: Test conditions
+      description: Sticker name, print size, lighting and whether this was a real print, emulator or synthetic fixture.

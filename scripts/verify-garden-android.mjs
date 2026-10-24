@@ -1,6 +1,7 @@
-import {createRequire} from 'node:module';import {execFileSync} from 'node:child_process';import {writeFile} from 'node:fs/promises';import assert from 'node:assert/strict';
-const require=createRequire(import.meta.url);const {chromium}=require('C:/Users/Bhawesh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const adb='C:/Users/Bhawesh/AppData/Local/Android/Sdk/platform-tools/adb.exe';const shot=async name=>writeFile(`work/qa/android/${name}.png`,execFileSync(adb,['-s','emulator-5554','exec-out','screencap','-p'],{maxBuffer:16*1024*1024}));
+import { adbPath } from './browser-tools.mjs';
+import {execFileSync} from 'node:child_process';import {writeFile} from 'node:fs/promises';import assert from 'node:assert/strict';
+import { chromium } from 'playwright';
+const serial=process.env.ANDROID_TEST_DEVICE||'emulator-5554';const adb=adbPath();const shot=async name=>writeFile(`work/qa/android/${name}.png`,execFileSync(adb,['-s',serial,'exec-out','screencap','-p'],{maxBuffer:16*1024*1024}));
 const b=await chromium.connectOverCDP('http://127.0.0.1:9222');try{
 const p=b.contexts()[0].pages()[0];const errors=[];p.on('pageerror',e=>errors.push(e.message));
 await p.locator('[data-scan-state="scanning"]').waitFor({timeout:45000});await p.getByRole('button',{name:'Preview stickers'}).click();await p.getByLabel('Preview sticker').selectOption('garden-fizcool');

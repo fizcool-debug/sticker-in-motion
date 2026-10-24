@@ -1,6 +1,6 @@
 {
-  "name": "cet-ar-sticker",
-  "version": "0.1.0",
+  "name": "sticker-in-motion",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,7 +11,10 @@
     "android:sync": "npm run build && cap sync android",
     "android:open": "cap open android",
     "android:apk": "powershell -NoProfile -File scripts/build-android.ps1",
-    "android:publish": "powershell -NoProfile -File scripts/publish-android-release.ps1"
+    "android:publish": "powershell -NoProfile -File scripts/publish-android-release.ps1",
+    "test": "node scripts/verify-stabilizer.mjs",
+    "test:browser": "node scripts/verify-browser.mjs",
+    "targets:compile": "node scripts/compile-collection.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
@@ -34,7 +37,22 @@
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.160.0",
     "@vitejs/plugin-react": "latest",
+    "playwright": "1.64.1",
     "typescript": "5.9.3",
     "vite": "latest"
+  },
+  "description": "An offline Android AR sticker app with image tracking and animated artwork.",
+  "license": "MIT",
+  "author": "Bhawesh Kumar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fizcool-debug/sticker-in-motion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fizcool-debug/sticker-in-motion/issues"
+  },
+  "homepage": "https://github.com/fizcool-debug/sticker-in-motion#readme",
+  "engines": {
+    "node": ">=24"
   }
 }

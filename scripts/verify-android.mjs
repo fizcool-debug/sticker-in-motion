@@ -1,9 +1,7 @@
-import {createRequire} from 'node:module';
 import {execFileSync} from 'node:child_process';
 import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
-const require=createRequire(import.meta.url);
-const {chromium}=require('C:/Users/Bhawesh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+import { chromium } from 'playwright';
 const adb=(process.env.ANDROID_HOME||'C:/Users/Bhawesh/AppData/Local/Android/Sdk')+'/platform-tools/adb.exe';
 const serial=process.env.ANDROID_TEST_DEVICE||'emulator-5554';
 const shell=(...args)=>execFileSync(adb,['-s',serial,'shell',...args],{encoding:'utf8'});
