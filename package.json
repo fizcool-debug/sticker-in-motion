@@ -1,6 +1,6 @@
 {
   "name": "sticker-in-motion",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -39,7 +39,8 @@
     "@vitejs/plugin-react": "latest",
     "playwright": "1.64.1",
     "typescript": "5.9.3",
-    "vite": "latest"
+    "vite": "latest",
+    "lottie-web": "5.13.0"
   },
   "description": "An offline Android AR sticker app with image tracking and animated artwork.",
   "license": "MIT",

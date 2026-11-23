@@ -1,0 +1,17 @@
+{
+  "source": "assets/source/drone-delivery/animation.json",
+  "originalSize": [
+    800,
+    800
+  ],
+  "frames": 30,
+  "fps": 30,
+  "durationSeconds": 1.0,
+  "posterFrame": 15,
+  "targetIndex": 5,
+  "playback": "transparent RGBA PNG atlas",
+  "playbackFrameSize": 384,
+  "background": "original alpha; white interior details retained",
+  "printBackground": "white paper",
+  "audio": false
+}

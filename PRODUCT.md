@@ -20,7 +20,7 @@ Current target: Redmi Turbo 5 Android phone. The user switched from the web app 
 
 ## Brand Commitments
 
-Provisional app name: Sticker in Motion. CET is only the first test sticker, not the app identity. Scanner copy is generic; sticker names appear only when recognized or selected for preview. The prototype contains Fizcool Garden, Red No Rush and CET, with automatic recognition of either and one tracked sticker at a time.
+Provisional app name: Sticker in Motion. CET is only the first test sticker, not the app identity. Scanner copy is generic; sticker names appear only when recognized or selected for preview. The prototype contains Something Went Wrong (UFO), Drone Delivery, Aeris, Fizcool Garden, Red No Rush and CET, with automatic recognition and one tracked sticker at a time.
 
 Preserve the supplied CET test artwork, lettering, rainbow bar, and proportions. Approved animation for that sticker: rainbow sweep and subtle pulse. Do not change printed artwork to improve tracking without approval.
 
@@ -44,3 +44,7 @@ Current collection: CET uses its editable Remotion animation. Red No Rush uses t
 ## Fizcool Garden asset
 
 The user supplied frame_0118.png as the unchanged recognition image and garden-fizcool-scatter.webm. After inspecting the low-frame-rate WebM, the user approved the complete 180 PNG sequence at 30 fps (6 seconds). Original image, WebM and frame archive are preserved in assets/source/garden-fizcool. Garden uses an opaque H.264 video texture for AR and preview; existing CET/Red No Rush atlases remain unchanged. Target indices remain Red No Rush 0, CET 1, Garden 2.
+
+## November 23 sticker batch
+
+The user approved adding the prepared UFO and Drone Delivery Lottie animations together and updating the repo. Both animations retain transparency and white interior artwork, using RGBA atlases instead of depending on transparent WebM support in Android WebView. Frame counts and 30 fps timing are preserved; original full-resolution sources remain under assets/source. The UFO print target uses frame 45 and the drone uses frame 15, matching the supplied extracted stills, on white paper. Original target indices 0-3 are retained; UFO is 4 and drone is 5. Error 404 Illustration Concept remains pending because its source JSON was not provided.

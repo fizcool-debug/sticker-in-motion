@@ -1,0 +1,17 @@
+{
+  "source": "assets/source/something-went-wrong/animation.json",
+  "originalSize": [
+    1600,
+    1600
+  ],
+  "frames": 102,
+  "fps": 30,
+  "durationSeconds": 3.4,
+  "posterFrame": 45,
+  "targetIndex": 4,
+  "playback": "transparent RGBA PNG atlas",
+  "playbackFrameSize": 384,
+  "background": "original alpha; white interior details retained",
+  "printBackground": "white paper",
+  "audio": false
+}

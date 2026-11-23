@@ -12,13 +12,25 @@ export type StickerDefinition = {
   compositionWidth: number;
   compositionHeight: number;
   videoFile?: string;
-  renderMode?: 'video';
+  renderMode?: 'video' | 'atlas';
 };
 
 // CET is the first test asset, not the app's identity. Additional stickers
 // need their own animation and a compiled target before joining this list.
 export const targetFile = '/stickers/collection.mind';
 export const stickers: StickerDefinition[] = [{
+  id: 'something-went-wrong', name: 'Something Went Wrong (UFO)', assetBase: '/stickers/something-went-wrong',
+  targetFile, targetIndex: 4, aspectRatio: 1,
+  printedSize: '', animationName: 'UFO and parcel',
+  durationInFrames: 102, fps: 30, compositionWidth: 384, compositionHeight: 384,
+  renderMode: 'atlas',
+}, {
+  id: 'drone-delivery', name: 'Drone Delivery', assetBase: '/stickers/drone-delivery',
+  targetFile, targetIndex: 5, aspectRatio: 1,
+  printedSize: '', animationName: 'Drone delivery',
+  durationInFrames: 30, fps: 30, compositionWidth: 384, compositionHeight: 384,
+  renderMode: 'atlas',
+}, {
   id: 'aeris', name: 'Aeris', assetBase: '/stickers/aeris',
   targetFile, targetIndex: 3, aspectRatio: 162 / 234,
   printedSize: '', animationName: 'Goat at the window',

@@ -1,5 +1,15 @@
 # Releases
 
+## v0.3
+
+- Added Something Went Wrong (UFO) and Drone Delivery, bringing the collection to six stickers.
+- Kept both animations transparent, including their original white details. PNG atlases handle AR playback and Remotion previews without relying on Android transparent-video decoding.
+- Preserved all frames and original timing: UFO 102 frames / 3.4 seconds; drone 30 frames / 1 second; both 30 fps.
+- Added print artwork, original Lottie/PNG/SVG/WebM files, repeatable rendering/packing scripts, and a recorded queue for the missing Envato 404 source.
+- Preserved the newer open-source repo documentation, licensing, CI and portable browser tooling.
+
+Debug-signed APK for sideload testing; Android version 0.3 / versionCode 5. Build/signature verification, six-target synthetic Android recognition, actual AR alpha/white-detail checks, browser smoke tests and native camera/lifecycle/Back/font-scale/landscape checks passed. Physical Redmi Turbo 5 print recognition, alignment, stability, and sustained performance remain to be checked manually.
+
 ## v0.2
 
 - Added Aeris as the fourth automatically recognized sticker, using the supplied SVG as its target.

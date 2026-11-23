@@ -1,0 +1,11 @@
+{
+  "sheets": [
+    "atlas-0.png",
+    "atlas-1.png"
+  ],
+  "fps": 30,
+  "frames": 30,
+  "columns": 4,
+  "rows": 4,
+  "frameSize": 384
+}

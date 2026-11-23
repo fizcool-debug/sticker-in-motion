@@ -7,7 +7,7 @@
 
 An open-source Android AR sticker app by [Bhawesh Kumar / Fizcool](https://fizcool.in). Point your camera at a supported printed sticker and its animation appears above the artwork, following it as you move.
 
-**[Download Android APK · v0.2](https://github.com/fizcool-debug/sticker-in-motion/releases/download/v0.2/Sticker-in-Motion-v0.2.apk)** · [Release notes](https://github.com/fizcool-debug/sticker-in-motion/releases/tag/v0.2) · [Contributing](CONTRIBUTING.md) · [Roadmap](ROADMAP.md)
+**[Download Android APK · v0.3](https://github.com/fizcool-debug/sticker-in-motion/releases/download/v0.3/Sticker-in-Motion-v0.3.apk)** · [Release notes](https://github.com/fizcool-debug/sticker-in-motion/releases/tag/v0.3) · [Contributing](CONTRIBUTING.md) · [Roadmap](ROADMAP.md)
 
 The original app code is MIT-licensed. Sample artwork, fonts and dependencies have separate terms; see [Licensing and credits](#licensing-and-credits).
 
@@ -21,7 +21,7 @@ Actual browser captures of the app's paused preview screens, using the bundled a
 
 ## What it does
 
-- Recognises four registered stickers and plays the matching animation.
+- Recognises six registered stickers and plays the matching animation.
 - Tracks one sticker at a time, with pose smoothing and a replay control.
 - Opens directly into a full-screen camera, keeping the artwork in focus.
 - Includes a preview collection and original artwork views.
@@ -35,7 +35,7 @@ This recognises supported artwork; it does not animate arbitrary images.
 
 Requires **Android 7.0 or later**, camera access, and an up-to-date **Android System WebView**.
 
-1. [Download the APK](https://github.com/fizcool-debug/sticker-in-motion/releases/download/v0.2/Sticker-in-Motion-v0.2.apk).
+1. [Download the APK](https://github.com/fizcool-debug/sticker-in-motion/releases/download/v0.3/Sticker-in-Motion-v0.3.apk).
 2. Open it on your phone and allow installation from that source when Android asks.
 3. Launch **Sticker in Motion** and allow camera access.
 4. Point the camera at a supported print in even light, keeping the whole sticker visible.
@@ -45,16 +45,18 @@ Open Preview to browse without scanning. The camera stops when the app goes into
 
 The current release is a **debug-signed prototype for sideload testing**, not a Google Play release. A locally built APK uses your own debug key, so you may need to uninstall an existing build before installing it.
 
-**v0.2 APK SHA-256**
+**v0.3 APK SHA-256**
 
 ```text
-e6f5fd19172ac317c0bfcfae0c30a973a43dfa4dddc8e21f6facd36296fd6ed6
+7e4fd210759841e6152fbc45569bf49c7c97ecf5f38fb9f0ffc2b7bb4c08c860
 ```
 
 ## The collection
 
 | Sticker | Animation | Length | Artwork |
 | --- | --- | --- | --- |
+| Something Went Wrong (UFO) | UFO and parcel, transparent | 3.4 seconds, 30 fps | [View](public/stickers/something-went-wrong/print-preview.png) |
+| Drone Delivery | Drone and package, transparent | 1 second, 30 fps | [View](public/stickers/drone-delivery/print-preview.png) |
 | Aeris | Goat emerges from its window and looks around | 10 seconds, 30 fps | [View](public/stickers/aeris/print-preview.png) |
 | Fizcool Garden | Garden scatter | 6 seconds, 30 fps | [View](public/stickers/garden-fizcool/print-preview.png) |
 | Red No Rush | Original animation | About 1.33 seconds, 6 fps | [View](public/stickers/red-no-rush/print-preview.png) |
@@ -113,7 +115,7 @@ The APK is `android/app/build/outputs/apk/debug/app-debug.apk`. To use Android S
 
 React and TypeScript provide the interface, MindAR handles image tracking, and Three.js renders the animation over the camera feed. Capacitor packages the web app and assets for Android.
 
-Aeris and Garden use video textures. Red No Rush and CET use sprite atlases. The animation sits slightly above the print, and rigid-pose smoothing reduces visible shaking. Camera images stay on the device. The app does not request microphone or storage access.
+Aeris and Garden use video textures. UFO, Drone Delivery, Red No Rush and CET use sprite atlases. The two new Lottie stickers keep their original alpha, including their white artwork details; they do not overlay a white video rectangle. The animation sits slightly above the print, and rigid-pose smoothing reduces visible shaking. Camera images stay on the device. The app does not request microphone or storage access.
 
 | Path | Purpose |
 | --- | --- |
@@ -128,7 +130,7 @@ Aeris and Garden use video textures. Red No Rush and CET use sprite atlases. The
 
 ## Make your own sticker
 
-Add your artwork, animation assets, and entry in `src/stickers.ts`, then rebuild `public/stickers/collection.mind`. The current target order is Red No Rush (0), CET (1), Fizcool Garden (2), and Aeris (3); keep indices aligned with the compiled file.
+Add your artwork, animation assets, and entry in `src/stickers.ts`, then rebuild `public/stickers/collection.mind`. The current target order is Red No Rush (0), CET (1), Fizcool Garden (2), Aeris (3), Something Went Wrong (UFO) (4), and Drone Delivery (5); keep indices aligned with the compiled file.
 
 For the optional browser tools:
 
@@ -142,11 +144,23 @@ npm run test:browser
 
 Use `APP_URL` to point tools at another development server, `PLAYWRIGHT_EXECUTABLE_PATH` for a locally installed Chromium browser, and `ADB_PATH` or `ANDROID_HOME` for native test tooling. Native WebView scripts expect an installed debug app and a forwarded DevTools socket; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
+The UFO and drone source Lottie JSON, full-size static PNG/SVG and transparent WebM exports are preserved in `assets/source/`. To rebuild their Android playback assets:
+
+```sh
+node scripts/render-lottie-stickers.mjs
+python scripts/prepare-lottie-stickers.py
+npm run targets:compile
+```
+
+The packer requires Pillow. Playback uses 384-pixel RGBA tiles in 1536-pixel sheets; all 102 UFO frames and 30 drone frames play at the original 30 fps. Print previews retain the full original image dimensions on white paper. Tracking references are reduced to at most 800 pixels without cropping or changing the artwork. Remotion Player uses those same transparent atlases for previews.
+
+The Envato **Error 404 Illustration Concept** is still waiting for its source JSON and is not included in the app. `assets/source/lottie-batch.json` records the ready assets and remaining item.
+
 See [the animation guide](animation/README.md) and [Aeris rebuild notes](animation/AERIS-PREVIEW.md) for editing compositions and rendering assets.
 
 ## Prototype status
 
-Android build/signature checks, emulator lifecycle tests and synthetic-camera recognition checks have passed for the published v0.2 APK. Physical Redmi Turbo 5 checks remain pending, including alignment, glare, stability, heat and sustained performance. Browser and emulator fixtures are not physical-device evidence.
+Android build/signature checks, emulator lifecycle tests and synthetic-camera recognition checks have passed for the published v0.3 APK. Physical Redmi Turbo 5 checks remain pending, including alignment, glare, stability, heat and sustained performance. Browser and emulator fixtures are not physical-device evidence.
 
 See [VALIDATION.md](VALIDATION.md), [CHANGELOG.md](CHANGELOG.md) and [ROADMAP.md](ROADMAP.md). Please report issues with your device, Android/WebView versions, lighting conditions and reproduction steps, without private camera images.
 

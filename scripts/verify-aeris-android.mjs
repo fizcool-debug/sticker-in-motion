@@ -16,7 +16,7 @@ try {
   assert.equal(await page.locator('.scanner .topbar, .scanner .scan-panel').count(), 0);
   await page.getByRole('button', {name:'Preview stickers'}).click();
   await page.getByLabel('Preview sticker', { exact: true }).selectOption('aeris');
-  assert.equal(await page.getByLabel('Preview sticker', { exact: true }).locator('option').count(), 4);
+  assert.equal(await page.getByLabel('Preview sticker', { exact: true }).locator('option').count(), 6);
   await page.locator('.supplied-video').evaluate(video => video.play());
   await page.waitForFunction(() => document.querySelector('.supplied-video').currentTime > .3);
   const preview = await page.locator('.supplied-video').evaluate(video => ({duration:video.duration,width:video.videoWidth,height:video.videoHeight}));
